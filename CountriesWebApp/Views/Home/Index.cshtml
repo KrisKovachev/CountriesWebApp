@@ -1,0 +1,324 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Country Info</title>
+    <style>
+        @@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+        * {
+            transition: all 0.25s ease-in-out;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Fjalla One', sans-serif;
+            background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center center no-repeat;
+            background-size: cover;
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            color: #2A293E;
+        }
+
+            body::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(120deg, rgba(255, 200, 255, 0.15), rgba(149, 164, 255, 0.2));
+                backdrop-filter: blur(3px);
+                z-index: 0;
+            }
+
+            body * {
+                position: relative;
+                z-index: 1;
+            }
+
+        .container {
+            background: #f8f4e5;
+            padding: 50px 80px;
+            border: 2px solid rgba(0, 0, 0, 1);
+            box-shadow: 15px 15px 1px #ffa580, 15px 15px 1px 2px rgba(0, 0, 0, 1);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            animation: fadeSlideUp 0.8s ease-out;
+            transform: perspective(1000px) rotateX(0deg);
+            transition: transform 0.4s ease;
+        }
+            .container:hover {
+                transform: perspective(1000px) rotateX(3deg);
+            }
+
+        h1 {
+            font-size: 22pt;
+            margin-bottom: 30px;
+            color: #2A293E;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px #ffc8ff;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            font-size: 14pt;
+            line-height: 28pt;
+            font-family: 'Fjalla One', sans-serif;
+            margin-bottom: 25pt;
+            border: none;
+            border-bottom: 5px solid rgba(0, 0, 0, 1);
+            background: #f8f4e5;
+            padding-left: 5px;
+            outline: none;
+            color: rgba(0, 0, 0, 1);
+            min-width: 250px;
+            transition: border-color 0.3s ease;
+        }
+
+            input:focus {
+                border-bottom: 5px solid #ffa580;
+                border-color: #ffa580;
+                box-shadow: 0 4px 10px rgba(255, 165, 128, 0.4);
+            }
+            input:hover {
+                background-color: #fffef7;
+                transform: translateY(-2px);
+                transition: all 0.2s ease;
+            }
+
+        button {
+            display: block;
+            margin: 0 auto;
+            line-height: 28pt;
+            padding: 0 25px;
+            background: #ffa580;
+            letter-spacing: 2px;
+            transition: all 0.25s ease-in-out;
+            outline: none;
+            border: 1px solid rgba(0, 0, 0, 1);
+            box-shadow: 3px 3px 1px 1px #95a4ff, 3px 3px 1px 2px rgba(0, 0, 0, 1);
+            background: linear-gradient(90deg, #ffa580, #95a4ff);
+            background-size: 200%;
+            transition: background-position 0.4s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background: rgba(0, 0, 0, 1);
+                color: white;
+                border: 1px solid rgba(0, 0, 0, 1);
+                background-position: right;
+                transform: translateY(-2px) scale(1.02);
+            }
+            button:active {
+                transform: translateY(3px);
+                box-shadow: 2px 2px 0px #95a4ff, 2px 2px 0px 1px rgba(0, 0, 0, 1);
+            }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fffdf8;
+            border: 1px solid rgba(0, 0, 0, 1);
+            box-shadow: 6px 6px 0px #ffc8ff, 6px 6px 0px 1px rgba(0, 0, 0, 1);
+            border-radius: 4px;
+            display: none;
+            text-align: left;
+            animation: fadeInScale 0.5s ease forwards;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+            .result p {
+                margin: 8px 0;
+                font-size: 13pt;
+                color: #2A293E;
+            }
+
+            .result span {
+                font-weight: bold;
+                color: #2A293E;
+            }
+            .result.show {
+                opacity: 1;
+            }
+
+        #resFlag {
+            width: 150px;
+            border: 2px solid rgba(0, 0, 0, 1);
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+            box-shadow: 5px 5px 0px #95a4ff, 5px 5px 0px 1px rgba(0, 0, 0, 1);
+            transform: scale(0.8) translateY(20px);
+            opacity: 0;
+            animation: flagPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        /* Анимация за появата — леко подскачане и fade-in */
+        @@keyframes flagPop {
+            0% {
+                transform: scale(0.8) translateY(20px);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.1) translateY(-5px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+
+        #countryCount {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: #f8f4e5;
+            padding: 6px 10px;
+            border: 1px solid #000;
+            box-shadow: 3px 3px 0px #ffa580, 3px 3px 0px 1px #000;
+            font-size: 12pt;
+            color: #2A293E;
+            border-radius: 4px;
+        }
+
+        ::selection {
+            background: #ffc8ff;
+        }
+
+        @@keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @@keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        #quizButton {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: #f8f4e5;
+            padding: 10px 18px;
+            border: 2px solid rgba(0, 0, 0, 1);
+            box-shadow: 3px 3px 0px #95a4ff, 3px 3px 0px 1px #000;
+            font-size: 13pt;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+
+            #quizButton:hover {
+                background: linear-gradient(90deg, #ffa580, #95a4ff);
+                color: white;
+                transform: translateY(-2px) scale(1.05);
+                box-shadow: 4px 4px 0px #000, 4px 4px 0px 1px #000;
+            }
+    </style>
+
+
+</head>
+
+<body>
+    <div id="quizButton" onclick="window.location.href='@Url.Action("Menu", "Home")'">QUIZ 🧠</div>
+
+
+
+    <div class="container">
+
+        <h1>Countries</h1>
+
+        <input id="countryName" type="text" placeholder="Enter Country..." />
+        <button onclick="fetchCountry()">Serach</button>
+        <div id="message"></div>
+
+        <div id="result" class="result">
+            <h3 id="resName"></h3>
+            <p>🏢Capital: <span id="resCapital"></span></p>
+            <p>🌍Region: <span id="resRegion"></span></p>
+            <p>💰Currency: <span id="resCurrency"></span></p>
+            <img id="resFlag" src="" alt="Flag">
+        </div>
+    </div>
+
+    <script>
+        async function fetchCountry() {
+            const name = document.getElementById("countryName").value.trim();
+            const message = document.getElementById("message");
+            const resultDiv = document.getElementById("result");
+
+            if (!name) {
+                message.innerHTML = "<p style='color:red;'>Please enter country!</p>";
+                return;
+            }
+
+            message.innerHTML = "<p>Loading Data...</p>";
+            resultDiv.style.display = "none";
+
+            try {
+                const response = await fetch(`/api/country/${encodeURIComponent(name)}`);
+                if (!response.ok) {
+                    message.innerHTML = "<p style='color:red;'>Country not found.</p>";
+                    return;
+                }
+                const data = await response.json();
+                message.innerHTML = "<p style='color:green;'>Loading data successfuly!</p>";
+
+
+                document.getElementById("resName").innerText = data.name || "N/A";
+                document.getElementById("resCapital").innerText = data.capital || "N/A";
+                document.getElementById("resRegion").innerText = data.region || "N/A";
+                document.getElementById("resCurrency").innerText = data.currency || "N/A";
+
+                const flagEl = document.getElementById("resFlag");
+                if (data.flagUrl) {
+                    flagEl.src = data.flagUrl;
+                    flagEl.alt = `${data.name} flag`;
+                    flagEl.style.display = "block";
+                } else {
+                    flagEl.style.display = "none";
+                }
+
+                resultDiv.style.display = "block";
+            } catch (err) {
+                console.error(err);
+                message.innerHTML = "<p style='color:red;'>Loading error!</p>";
+            }
+        }
+
+
+    </script>
+</body>
+</html>

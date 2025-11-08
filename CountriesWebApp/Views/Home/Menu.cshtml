@@ -1,0 +1,158 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8" />
+    <title>Game Mode Selection</title>
+    <style>
+        @@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+        * {
+            transition: all 0.25s ease-in-out;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Fjalla One', sans-serif;
+            background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center center no-repeat;
+            background-size: cover;
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            color: #2A293E;
+        }
+
+            body::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(120deg, rgba(255, 200, 255, 0.15), rgba(149, 164, 255, 0.2));
+                backdrop-filter: blur(3px);
+                z-index: 0;
+            }
+
+            body * {
+                position: relative;
+                z-index: 1;
+            }
+
+        .container {
+            background: #f8f4e5;
+            padding: 50px 80px;
+            border: 2px solid rgba(0, 0, 0, 1);
+            box-shadow: 15px 15px 1px #ffa580, 15px 15px 1px 2px rgba(0, 0, 0, 1);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            animation: fadeSlideUp 0.8s ease-out;
+            transform: perspective(1000px) rotateX(0deg);
+            transition: transform 0.4s ease;
+        }
+
+            .container:hover {
+                transform: perspective(1000px) rotateX(3deg);
+            }
+
+        h1 {
+            font-size: 22pt;
+            margin-bottom: 25px;
+            color: #2A293E;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px #ffc8ff;
+        }
+
+        .mode-button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            background: linear-gradient(90deg, #ffa580, #95a4ff);
+            border: 1px solid rgba(0, 0, 0, 1);
+            box-shadow: 3px 3px 0px #95a4ff, 3px 3px 0px 1px #000;
+            font-size: 14pt;
+            font-family: 'Fjalla One', sans-serif;
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: all 0.25s ease-in-out;
+            letter-spacing: 1px;
+        }
+
+            .mode-button:hover {
+                background: rgba(0, 0, 0, 1);
+                color: white;
+                transform: translateY(-2px) scale(1.03);
+            }
+
+            .mode-button:active {
+                transform: translateY(2px);
+                box-shadow: 2px 2px 0px #95a4ff, 2px 2px 0px 1px rgba(0, 0, 0, 1);
+            }
+
+        #backButton {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            background: #f8f4e5;
+            padding: 10px 18px;
+            border: 2px solid rgba(0, 0, 0, 1);
+            box-shadow: 3px 3px 0px #95a4ff, 3px 3px 0px 1px #000;
+            font-size: 13pt;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+            #backButton:hover {
+                background: linear-gradient(90deg, #ffa580, #95a4ff);
+                color: white;
+                transform: translateY(-2px) scale(1.05);
+            }
+
+        @@keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="backButton" onclick="location.href='@Url.Action("Index", "Home")'">🏠 Home</button>
+
+    <div class="container">
+        <h1>🌍 Choose Region</h1>
+
+        <button class="mode-button" data-region="all">🌐 All Countries</button>
+        <button class="mode-button" data-region="Europe">🌍 Europe</button>
+        <button class="mode-button" data-region="Asia">🌏 Asia</button>
+        <button class="mode-button" data-region="Africa">🌍 Africa</button>
+        <button class="mode-button" data-region="Americas">🌎 Americas</button>
+        <button class="mode-button" data-region="Oceania">🌴 Oceania</button>
+
+        <div id="footer">
+            <hr style="margin:15px 0;">
+            <div style="font-size:11pt;">Choose your preferred mode and start the quiz!</div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.mode-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const region = btn.getAttribute('data-region');
+                localStorage.setItem('region', region);
+                window.location.href = '@Url.Action("Quiz", "Home")';
+            });
+        });
+    </script>
+</body>
+</html>
