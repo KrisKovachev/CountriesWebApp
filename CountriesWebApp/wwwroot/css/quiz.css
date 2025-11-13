@@ -1,0 +1,253 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+* {
+    transition: all 0.25s ease-in-out;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Fjalla One', sans-serif;
+    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center center no-repeat;
+    background-size: cover;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    color: #2A293E;
+}
+
+    body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(255, 200, 255, 0.15), rgba(149, 164, 255, 0.2));
+        backdrop-filter: blur(3px);
+        z-index: 0;
+    }
+
+    body * {
+        position: relative;
+        z-index: 1;
+    }
+
+.container {
+    background: #f8f4e5;
+    padding: 60px 80px;
+    border: 2px solid rgba(0, 0, 0, 1);
+    box-shadow: 15px 15px 1px #ffa580, 15px 15px 1px 2px rgba(0, 0, 0, 1);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    animation: fadeSlideUp 0.8s ease-out;
+    border-radius: 8px;
+}
+
+h1 {
+    font-size: 24pt;
+    margin-bottom: 25px;
+    color: #2A293E;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0px #ffc8ff;
+}
+
+#flag {
+    width: 160px;
+    border: 2px solid rgba(0, 0, 0, 1);
+    border-radius: 4px;
+    margin: 25px auto 15px;
+    display: block;
+    box-shadow: 5px 5px 0px #95a4ff, 5px 5px 0px 1px rgba(0, 0, 0, 1);
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+    #flag.visible {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+input {
+    display: block;
+    width: 100%;
+    font-size: 15pt;
+    line-height: 28pt;
+    margin: 30px 0 25px;
+    border: none;
+    border-bottom: 5px solid rgba(0, 0, 0, 1);
+    background: #f8f4e5;
+    padding-left: 5px;
+    outline: none;
+    color: rgba(0, 0, 0, 1);
+}
+
+    input:focus {
+        border-bottom: 5px solid #ffa580;
+        box-shadow: 0 4px 10px rgba(255, 165, 128, 0.4);
+    }
+
+button {
+    background: linear-gradient(90deg, #ffa580, #95a4ff);
+    border: 1px solid rgba(0, 0, 0, 1);
+    box-shadow: 3px 3px 0px #95a4ff, 3px 3px 0px 1px #000;
+    font-size: 14pt;
+    font-family: 'Fjalla One', sans-serif;
+    padding: 10px 25px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    margin: 5px;
+    border-radius: 6px;
+}
+
+    button:hover {
+        background: rgba(0, 0, 0, 1);
+        color: white;
+        transform: translateY(-2px) scale(1.03);
+    }
+
+#message {
+    margin-top: 15px;
+    font-size: 14pt;
+    min-height: 28px;
+}
+
+#score {
+    margin-top: 20px;
+    font-size: 15pt;
+    font-weight: bold;
+    color: #2A293E;
+}
+
+#timer {
+    margin-top: 8px;
+    font-size: 13pt;
+    color: #444;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+    #timer.low {
+        color: red;
+        text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+    }
+
+/* 🎨 Профил и Back бутони */
+.top-buttons {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    display: flex;
+    gap: 10px;
+}
+
+    .top-buttons a {
+        text-decoration: none;
+        background: #f8f4e5;
+        border: 2px solid #000;
+        padding: 10px 18px;
+        border-radius: 6px;
+        box-shadow: 3px 3px 0 #95a4ff, 3px 3px 0 1px #000;
+        font-size: 13pt;
+        font-weight: bold;
+        color: #2A293E;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+
+        .top-buttons a:hover {
+            background: linear-gradient(90deg, #ffa580, #95a4ff);
+            color: white;
+            transform: translateY(-2px) scale(1.05);
+        }
+
+#leaderboard {
+    margin-top: 20px;
+    text-align: left;
+    font-size: 12pt;
+    line-height: 1.4em;
+    padding-top: 10px;
+}
+.leaderboard-entry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+    font-size: 14pt;
+}
+
+.badge-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    vertical-align: middle;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+    transition: transform 0.2s ease;
+}
+
+.badge-icon:hover {
+    transform: scale(1.2);
+}
+
+.rank-num {
+    font-weight: bold;
+    color: #ff7b00;
+}
+
+.player-name {
+    color: #222;
+}
+
+.player-rank {
+    color: #777;
+    margin-left: 4px;
+    font-size: 12pt;
+}
+.level-up-popup {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 42pt;
+    font-weight: 900;
+    text-align: center;
+    color: #ffe680;
+    text-shadow: 0 0 10px rgba(255, 255, 150, 0.8), 0 0 25px rgba(255, 180, 0, 0.6);
+    animation: smoothPop 2.5s ease-out forwards;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+@keyframes smoothPop {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -60%) scale(0.8);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.0);
+    }
+}
+
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

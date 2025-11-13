@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="~/css/geoheat.css" />
+}
+
+@section Scripts {
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="~/js/geoheat.js"></script>
+}
+
+<div class="geo-wrapper">
+    <h1>🌍 GeoHeat Mode</h1>
+    <p class="subtitle">Guess the secret country! The greener the color — the closer your guess.</p>
+
+    <div id="map"></div>
+
+    <div class="guess-container">
+        <input id="countryInput" placeholder="Enter country name..." autocomplete="off" />
+        <button id="guessBtn">Guess</button>
+        <button id="giveUpBtn">Give Up</button>
+    </div>
+
+    <div id="message"></div>
+
+    <div id="guesses-list"></div>
+
+</div>

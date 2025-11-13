@@ -1,0 +1,147 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+html, body {
+    font-family: 'Fjalla One', sans-serif;
+    background: linear-gradient(135deg, #a8edea, #fed6e3);
+    margin: 0;
+    padding: 0;
+    height: auto; /* 🔧 не фиксираме височина */
+    overflow-y: auto; /* ✅ позволяваме скрол */
+}
+
+/* 📦 Централният контейнер стои като карта, без да блокира движението */
+.geo-wrapper {
+    text-align: center;
+    width: 90%;
+    max-width: 900px;
+    background: #fff8f0;
+    padding: 30px 40px;
+    border-radius: 12px;
+    border: 2px solid #000;
+    box-shadow: 10px 10px 0 #ffa580, 10px 10px 0 2px #000;
+    margin: 120px auto 50px; /* ✅ добавя място под навигацията */
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 28pt;
+    text-shadow: 2px 2px 0 #ffc8ff;
+}
+
+.subtitle {
+    margin-top: -5px;
+    color: #333;
+    font-size: 13pt;
+}
+
+#map {
+    height: 60vh;
+    width: 100%;
+    border: 2px solid #000;
+    border-radius: 12px;
+    box-shadow: 5px 5px 0 #95a4ff, 5px 5px 0 1px #000;
+    margin: 15px 0;
+}
+
+.guess-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+input {
+    width: 60%;
+    font-size: 14pt;
+    padding: 8px 12px;
+    border: 2px solid #000;
+    border-radius: 8px;
+    outline: none;
+}
+
+button {
+    background: linear-gradient(90deg, #ffa580, #95a4ff);
+    border: 2px solid #000;
+    border-radius: 8px;
+    font-size: 14pt;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+    button:hover {
+        background: #000;
+        color: #fff;
+    }
+
+#message {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+#guesses-list {
+    margin-top: 15px;
+    max-height: 120px;
+    overflow-y: auto;
+    text-align: left;
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 3px 3px 0 #95a4ff;
+}
+
+.guess-item {
+    margin: 4px 0;
+    font-size: 13pt;
+}
+
+
+
+.win-popup {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff8e5;
+    border: 3px solid #000;
+    padding: 25px 40px;
+    font-size: 20pt;
+    font-weight: bold;
+    border-radius: 12px;
+    box-shadow: 8px 8px 0 #95a4ff, 8px 8px 0 2px #000;
+    text-align: center;
+    animation: popWin 2.5s ease-in-out;
+    z-index: 10000;
+}
+.give-up {
+    background: linear-gradient(90deg, #ff8080, #ffb3b3);
+    color: #000;
+}
+
+    .give-up:hover {
+        background: #000;
+        color: #fff;
+    }
+
+@keyframes popWin {
+    0% {
+        transform: translate(-50%, -55%) scale(0.8);
+        opacity: 0;
+    }
+
+    20% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 1;
+    }
+
+    80% {
+        transform: translate(-50%, -50%) scale(1.0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1.0);
+        opacity: 0;
+    }
+}

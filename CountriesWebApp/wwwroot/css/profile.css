@@ -1,0 +1,221 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+body {
+    font-family: 'Fjalla One', sans-serif;
+    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center center no-repeat;
+    background-size: cover;
+    color: #2A293E;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+    body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(255, 200, 255, 0.2), rgba(149, 164, 255, 0.3));
+        backdrop-filter: blur(3px);
+        z-index: 0;
+    }
+
+    body * {
+        position: relative;
+        z-index: 1;
+    }
+
+.profile-container {
+    background: #f8f4e5;
+    padding: 45px 60px;
+    border: 2px solid #000;
+    box-shadow: 15px 15px 1px #ffa580, 15px 15px 0 2px #000;
+    border-radius: 14px;
+    max-width: 520px;
+    width: 95%;
+    text-align: center;
+    animation: fadeSlideUp 0.8s ease-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .profile-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 15px 18px 10px rgba(0, 0, 0, 0.2), 15px 15px 0 2px #000;
+    }
+
+h1 {
+    font-size: 26pt;
+    text-shadow: 2px 2px 0px #ffc8ff;
+    margin-bottom: 20px;
+}
+
+.profile-info {
+    font-size: 15pt;
+    margin-top: 15px;
+    text-align: left;
+    line-height: 1.8em;
+    padding: 0 10px;
+}
+
+.rank {
+    font-size: 17pt;
+    font-weight: bold;
+    margin-top: 25px;
+    text-align: center;
+    color: #ff7b00;
+    text-shadow: 1px 1px 0px #00000033;
+}
+
+/* 🔘 Горни бутони */
+.button-row {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    gap: 14px;
+}
+
+.nav-btn {
+    background: linear-gradient(90deg, #ffa580, #95a4ff);
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0px #95a4ff, 3px 3px 0px 1px #000;
+    padding: 10px 22px;
+    font-size: 13pt;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: #000;
+}
+
+    .nav-btn:hover {
+        background: #000;
+        color: white;
+        transform: translateY(-2px) scale(1.05);
+    }
+
+/* ⭐ Level секция */
+.level-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 35px;
+    gap: 12px;
+}
+
+.level-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+    background: #fff9e8;
+    border-radius: 12px;
+    padding: 10px 18px;
+    border: 2px solid #000;
+    box-shadow: 4px 4px 0px #95a4ff, 4px 4px 0px 1px #000;
+}
+
+.level-number {
+    font-size: 18pt;
+    font-weight: bold;
+    color: #2A293E;
+    text-shadow: 1px 1px 2px #ffc8ff;
+}
+
+.level-badge {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
+}
+
+    .level-badge:hover {
+        transform: scale(1.08) rotate(2deg);
+        filter: brightness(1.1);
+    }
+
+/* XP бар (само един) */
+.xp-bar {
+    width: 100%;
+    height: 28px;
+    background: rgba(20, 20, 20, 0.9);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 255, 180, 0.2);
+}
+
+.xp-fill {
+    height: 100%;
+    width: var(--xp-width, 0%);
+    background: linear-gradient( 120deg, rgba(0, 255, 180, 0.9), rgba(0, 200, 255, 0.8), rgba(0, 255, 150, 0.9), rgba(0, 255, 180, 0.9) );
+    background-size: 300% 300%;
+    border-radius: 14px;
+    animation: xpLiquidFlow 4s linear infinite, xpGlowPulse 2.8s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(0, 255, 180, 0.7), inset 0 0 8px rgba(255, 255, 255, 0.2);
+}
+@keyframes xpLiquidFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* ✨ Леко пулсиращо сияние */
+@keyframes xpGlowPulse {
+    0%, 100% {
+        filter: brightness(1);
+        box-shadow: 0 0 12px rgba(0, 255, 180, 0.6);
+    }
+
+    50% {
+        filter: brightness(1.4);
+        box-shadow: 0 0 20px rgba(0, 255, 200, 0.9);
+    }
+}
+
+.xp-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 13pt;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+    pointer-events: none;
+}
+.xp-remaining {
+    margin-top: 8px;
+    font-size: 12pt;
+    color: #333;
+    text-shadow: 1px 1px 2px #fff5;
+}
+
+
+/* Анимации */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

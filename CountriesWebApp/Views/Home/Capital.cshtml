@@ -1,0 +1,82 @@
+﻿@{
+    Layout = "_Layout";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/quiz.css" />
+    <style>
+        /* Малко оформление за 4-те отговора в мрежа 2x2 */
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0 6px;
+        }
+
+        .option-btn.correct {
+            outline: 3px solid #27ae60;
+        }
+
+        .option-btn.wrong {
+            outline: 3px solid #e74c3c;
+        }
+
+        #countryBox h2 {
+            margin: 8px 0 6px;
+            font-size: 22pt;
+        }
+
+        #countryBox p {
+            margin: 0;
+            color: #555;
+        }
+    </style>
+}
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <script src="~/js/capital.js"></script>
+}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+
+    <meta charset="UTF-8" />
+    <title>Capital Quiz</title>
+</head>
+<body>
+    <audio id="bgMusic" src="/sound/game.mp3" autoplay loop></audio>
+
+    <div class="container">
+        <h1>Guess the Country by Capital!</h1>
+
+        <div id="countryBox">
+            <p>Which country has this capital?</p>
+            <h2 id="capitalName">Loading...</h2>
+        </div>
+
+        <div id="timer">⏱️ Time: 15s</div>
+
+        <div class="options" id="options">
+            <button class="option-btn button" data-index="0">A)</button>
+            <button class="option-btn button" data-index="1">B)</button>
+            <button class="option-btn button" data-index="2">C)</button>
+            <button class="option-btn button" data-index="3">D)</button>
+        </div>
+
+        <div>
+            <button id="nextBtn">Next</button>
+        </div>
+
+        <div id="message"></div>
+        <div id="score">Score: 0</div>
+        <div id="leaderboard"></div>
+    </div>
+
+    <script>
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.volume = 0.5;
+        bgMusic.play().catch(() =>
+            document.body.addEventListener('click', () => bgMusic.play(), { once: true })
+        );
+    </script>
+</body>
+</html>

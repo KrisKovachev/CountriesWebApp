@@ -1,0 +1,135 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png">
+    <title>Sign in</title>
+    <style>
+        @@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Fjalla One', sans-serif;
+            background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center center no-repeat;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2A293E;
+        }
+
+            body::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(120deg, rgba(255,200,255,0.2), rgba(149,164,255,0.2));
+                backdrop-filter: blur(3px);
+                z-index: 0;
+            }
+
+        .login-box {
+            position: relative;
+            background: #f8f4e5;
+            border: 2px solid #000;
+            box-shadow: 10px 10px 0px #95a4ff, 10px 10px 0px 1px #000;
+            padding: 40px 60px;
+            width: 360px;
+            text-align: center;
+            z-index: 1;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #2A293E;
+            text-shadow: 1px 1px 0px #ffc8ff;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 12px 0;
+            border: none;
+            border-bottom: 4px solid #000;
+            background: #f8f4e5;
+            font-size: 13pt;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+            input:focus {
+                border-color: #95a4ff;
+                box-shadow: 0 3px 8px rgba(149,164,255,0.3);
+            }
+
+        button {
+            background: linear-gradient(90deg, #95a4ff, #ffa580);
+            border: 1px solid #000;
+            color: #2A293E;
+            padding: 10px 25px;
+            font-size: 14pt;
+            font-family: 'Fjalla One', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 15px;
+            box-shadow: 3px 3px 0px #ffa580, 3px 3px 0px 1px #000;
+        }
+
+            button:hover {
+                background: #000;
+                color: white;
+                transform: translateY(-2px);
+            }
+
+        .alt-links {
+            margin-top: 20px;
+            font-size: 12pt;
+        }
+
+            .alt-links a {
+                color: #2A293E;
+                text-decoration: none;
+                border-bottom: 2px solid #95a4ff;
+                transition: color 0.3s;
+            }
+
+                .alt-links a:hover {
+                    color: #95a4ff;
+                }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <form class="login-box" method="post" asp-action="Login">
+        <h2>🔑 Sign in</h2>
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Sign in</button>
+
+        @if (ViewBag.Error != null)
+        {
+            <p style="color:red;margin-top:10px;">@ViewBag.Error</p>
+        }
+
+        <div class="alt-links">
+            Dont have account ? <a asp-action="Register" asp-controller="Auth">Register</a>
+        </div>
+    </form>
+</body>
+</html>

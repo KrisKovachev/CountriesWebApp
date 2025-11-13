@@ -1,49 +1,132 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@{
+    var username = Context.Session.GetString("Username");
+}
+<!DOCTYPE html>
+<html lang="bg">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CountriesWebApp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - Country Quiz</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CountriesWebApp.styles.css" asp-append-version="true" />
+    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png">
+    <style>
+        @@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+
+        body {
+            margin: 0;
+            font-family: 'Fjalla One', sans-serif;
+            background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center center no-repeat;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 🧭 Навигационен бар */
+        nav {
+            margin-top: 10px; /* по-малко разстояние отгоре */
+            background: rgba(248, 244, 229, 0.96);
+            border: 2px solid #000;
+            border-radius: 12px;
+            padding: 8px 22px;
+            box-shadow: 5px 5px 0px #ffa580, 5px 5px 0px 1px #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+
+            nav a {
+                text-decoration: none;
+                color: #2A293E;
+                font-size: 14pt;
+                padding: 6px 14px;
+                border: 1px solid #000;
+                border-radius: 8px;
+                background: linear-gradient(90deg, #ffa580, #95a4ff);
+                box-shadow: 3px 3px 0 #95a4ff, 3px 3px 0 1px #000;
+                transition: all 0.3s ease;
+            }
+
+                nav a:hover {
+                    background: #000;
+                    color: white;
+                    transform: translateY(-2px) scale(1.05);
+                }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 16pt;
+            text-shadow: 2px 2px 0px #ffc8ff;
+            margin-right: 10px;
+        }
+
+        /* 👤 Потребител вдясно */
+        .nav-user {
+            margin-left: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13pt;
+        }
+
+            .nav-user span {
+                color: #2A293E;
+                font-weight: bold;
+            }
+
+        /* 📦 Основно съдържание */
+        main {
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 35px 0;
+        }
+
+        footer {
+            margin-top: auto;
+            background: rgba(248, 244, 229, 0.9);
+            padding: 10px 15px;
+            border-top: 2px solid #000;
+            text-align: center;
+            font-size: 10pt;
+            width: 100%;
+        }
+    </style>
+
+    @RenderSection("Styles", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CountriesWebApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <nav>
+        <span class="navbar-brand">🌍 Country Quiz</span>
+        <a href="@Url.Action("Index", "Home")">🏠 Home</a>
+        <a href="@Url.Action("Gamemode", "Home")">🗺️Gamemode Selection</a>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - CountriesWebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        @if (username != null)
+        {
+            <span class="nav-user">
+                👤 @username
+                <a href="@Url.Action("Profile", "Auth")">Profile</a>
+                <a href="@Url.Action("Logout", "Auth")">Logout</a>
+            </span>
+        }
+        else
+        {
+            <span class="nav-user">
+                <a href="@Url.Action("Login", "Auth")">Login</a>
+                <a href="@Url.Action("Register", "Auth")">Register</a>
+            </span>
+        }
+    </nav>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,40 @@
+﻿@{
+	Layout = "_Layout";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/gamemode.css" />
+}
+@section Scripts {
+    <script src="~/js/gamemode.js"></script>
+}
+<!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="~/css/gamemode.css" />
+        <title>Gamemode Selection</title>
+    </head>
+    <body>
+    <div class="gamemode-container">
+        <h1>🎮 Choose Gamemode</h1>
+
+        <div class="mode-grid">
+            <div class="mode-card" id="flagMode">
+                <h2>🌍 Guess the Flag</h2>
+            </div>
+
+            <div class="mode-card" id="capitalMode">
+                <h2>🏙️ Guess the Capital</h2>
+            </div>
+
+            <div class="mode-card" id="geoheatMode">
+                <h2>🏙️ Mystery Country</h2>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/gamemode.js"></script>
+    
+    </body>
+    </html>
+

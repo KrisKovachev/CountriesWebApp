@@ -1,0 +1,63 @@
+﻿@{
+    Layout = null;
+    var username = Context.Session.GetString("Username");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" />
+}
+
+@section Scripts {
+    <script src="~/js/profile.js"></script>
+}
+
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>@username - Profile</title>
+    <link rel="stylesheet" href="~/css/profile.css" />
+    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png">
+</head>
+<body>
+
+    <!-- 🔘 Горни бутони -->
+    <div class="button-row">
+        <a href="@Url.Action("Index", "Home")" class="nav-btn">🏠 Back</a>
+        <a href="@Url.Action("Logout", "Auth")" class="nav-btn">🚪 Logout</a>
+    </div>
+
+    <!-- 🧩 Профил контейнер -->
+    <div class="profile-container">
+        <h1>👤 @username's Profile</h1>
+
+        <div class="profile-info">
+            <p><b>Username:</b> @Model.Username</p>
+            <p><b>Email:</b> @Model.Email</p>
+            <p><b>Best Score:</b> @Model.BestScore</p>
+        </div>
+
+        <div class="rank">
+            🏆 Rank:
+            <span>@Model.Rank</span>
+        </div>
+
+        <!-- 🌟 Единен Level бар и бадж -->
+        <div class="level-section">
+            <div class="level-info">
+                <span class="level-number">⭐ Level @Model.Level</span>
+                <img class="level-badge" src="@Model.BadgeImage" alt="Badge" />
+            </div>
+
+            <div class="xp-bar">
+                <div class="xp-fill" style="width:@Model.ProgressPercent%;"></div>
+                <span class="xp-text">@Model.XP / @Model.RequiredXP XP</span>
+            </div>
+
+            <div class="xp-remaining">
+                <small>⬆️ Need @Model.RemainingXP XP to reach Level @(Model.Level + 1)</small>
+            </div>
+        </div>
+
+</body>
+</html>

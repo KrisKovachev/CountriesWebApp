@@ -20,7 +20,26 @@ namespace CountriesWebApp.Controllers
             return View();
         }
 
-        // 🧭 Меню за избор на континент (по желание)
+        public IActionResult Gamemode()
+        {
+            _logger.LogInformation("Gamemode selection page loaded.");
+            return View();
+        }
+
+        public IActionResult Capital()
+        {
+            _logger.LogInformation("Capital gamemode page loaded.");
+            return View();  
+        }
+
+        public IActionResult GeoHeat()
+        {
+            _logger.LogInformation("Geo Heat gamemode page loaded.");
+            return View();
+        }
+
+
+        // 🧭 Меню за избор на континент 
         public IActionResult Menu()
         {
             _logger.LogInformation("Menu page loaded.");

@@ -1,0 +1,163 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+* {
+    transition: all 0.25s ease-in-out;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Fjalla One', sans-serif;
+    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center center no-repeat;
+    background-size: cover;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    color: #2A293E;
+}
+
+    body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(255,200,255,0.15), rgba(149,164,255,0.2));
+        backdrop-filter: blur(3px);
+        z-index: 0;
+    }
+
+    body * {
+        position: relative;
+        z-index: 1;
+    }
+
+.container {
+    background: #f8f4e5;
+    padding: 50px 80px;
+    border: 2px solid #000;
+    box-shadow: 15px 15px 1px #ffa580, 15px 15px 1px 2px #000;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    animation: fadeSlideUp 0.8s ease-out;
+    transform: perspective(1000px) rotateX(0deg);
+    transition: transform 0.4s ease;
+}
+
+    .container:hover {
+        transform: perspective(1000px) rotateX(3deg);
+    }
+
+h1 {
+    font-size: 22pt;
+    margin-bottom: 30px;
+    color: #2A293E;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0px #ffc8ff;
+}
+
+input {
+    display: block;
+    width: 100%;
+    font-size: 14pt;
+    line-height: 28pt;
+    font-family: 'Fjalla One', sans-serif;
+    margin-bottom: 25pt;
+    border: none;
+    border-bottom: 5px solid #000;
+    background: #f8f4e5;
+    padding-left: 5px;
+    outline: none;
+    color: #000;
+    transition: border-color 0.3s ease;
+}
+
+    input:focus {
+        border-bottom: 5px solid #ffa580;
+        box-shadow: 0 4px 10px rgba(255,165,128,0.4);
+    }
+
+    input:hover {
+        background-color: #fffef7;
+        transform: translateY(-2px);
+    }
+
+button, .nav-btn {
+    display: inline-block;
+    margin: 0 5px;
+    line-height: 28pt;
+    padding: 6px 18px;
+    background: linear-gradient(90deg, #ffa580, #95a4ff);
+    letter-spacing: 1px;
+    transition: all 0.25s ease-in-out;
+    border: 1px solid #000;
+    box-shadow: 3px 3px 1px #95a4ff, 3px 3px 1px 2px #000;
+    font-family: 'Fjalla One', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    color: #2A293E;
+    font-size: 13pt;
+    border-radius: 6px;
+}
+
+    button:hover, .nav-btn:hover {
+        background: #000;
+        color: #fff;
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    button:active, .nav-btn:active {
+        transform: translateY(2px);
+        box-shadow: 2px 2px 0px #95a4ff, 2px 2px 0px 1px #000;
+    }
+
+#quizButton {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
+
+#userNav {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    display: flex;
+    gap: 8px;
+}
+
+.result {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fffdf8;
+    border: 1px solid #000;
+    box-shadow: 6px 6px 0px #ffc8ff, 6px 6px 0px 1px #000;
+    border-radius: 4px;
+    display: none;
+    text-align: left;
+    animation: fadeInScale 0.5s ease forwards;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
