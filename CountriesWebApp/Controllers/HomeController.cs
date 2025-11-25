@@ -20,6 +20,16 @@ namespace CountriesWebApp.Controllers
             return View();
         }
 
+        public IActionResult FlagMenu()
+        {
+            return View();
+        }
+
+
+        public IActionResult FlagQuiz(string continent)
+        {
+            return View();
+        }
         public IActionResult Gamemode()
         {
             _logger.LogInformation("Gamemode selection page loaded.");

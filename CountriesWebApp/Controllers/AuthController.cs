@@ -1,4 +1,4 @@
-﻿using CountriesWebApp.Data_Base;
+﻿using CountriesWebApp.Data;
 using CountriesWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,14 +10,76 @@ namespace CountriesWebApp.Controllers
     public class AuthController : Controller
     {
         private readonly UserDbContext _context;
+        private readonly IWebHostEnvironment env;
 
-        public AuthController(UserDbContext context)
+        public AuthController(UserDbContext context,IWebHostEnvironment env)
         {
             _context = context;
+            this.env = env;
+            Path.Combine(env.WebRootPath, "/images/avatar/1234.jpg");
         }
 
         [HttpGet]
         public IActionResult Register() => View();
+
+        //ПРОФИЛНА СНИМКА
+        [HttpPost]
+        public async Task<IActionResult> UploadProfilePicture(IFormFile profileImage)
+        {
+            if (profileImage == null || profileImage.Length == 0)
+            {
+                TempData["Error"] = "Please select a file.";
+                return RedirectToAction("Profile");
+            }
+
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var extension = Path.GetExtension(profileImage.FileName).ToLower();
+
+            if (!allowedExtensions.Contains(extension))
+            {
+                TempData["Error"] = "Invalid image format. Allowed: JPG, PNG, GIF.";
+                return RedirectToAction("Profile");
+            }
+
+            var username = HttpContext.Session.GetString("Username");
+            if (username == null)
+                return RedirectToAction("Login");
+
+            var user = _context.Users.FirstOrDefault(x => x.Username == username);
+            if (user == null)
+                return RedirectToAction("Login");
+
+            // === 1) ТРИЕМ СТАРИЯ АВАТАР АКО НЕ Е DEFAULT ===
+            if (!string.IsNullOrEmpty(user.AvatarUrl) && user.AvatarUrl.Contains("avatar"))
+            {
+                var oldFileName = user.AvatarUrl.Split("?")[0]; // махаме ?t= версии
+                var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", oldFileName.TrimStart('/'));
+
+                if (System.IO.File.Exists(oldFilePath))
+                    System.IO.File.Delete(oldFilePath);
+            }
+
+            // === 2) СЪЗДАВАМЕ УНИКАЛНО ИМЕ === 
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/avatar");
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            Directory.CreateDirectory(uploadPath);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await profileImage.CopyToAsync(stream);
+            }
+
+            // === 3) ОБНОВЯВАМЕ БАЗАТА С НОВИЯ АВАТАР ===
+            user.AvatarUrl = "/images/avatar/" + fileName;
+            _context.SaveChanges();
+
+            TempData["Success"] = "Profile picture updated!";
+            return RedirectToAction("Profile");
+        }
+
+
 
         [HttpPost]
         public async Task<IActionResult> Register(string username, string email, string password)
@@ -37,7 +99,8 @@ namespace CountriesWebApp.Controllers
                 PasswordHash = hashed,
                 XP = 0,
                 Level = 1,
-                Rank = "Beginner"
+                Rank = "Beginner",
+                AvatarUrl = "/images/avatar/default-avatar.jpg"
             };
 
             _context.Users.Add(user);
@@ -117,6 +180,45 @@ namespace CountriesWebApp.Controllers
             });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateFlagQuizScore(int score)
+        {
+            var username = HttpContext.Session.GetString("Username");
+            if (username == null)
+                return Json(new { error = true });
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            if (user == null)
+                return Json(new { error = true });
+
+            if (score > user.FlagQuizBestScore)
+                user.FlagQuizBestScore = score;
+
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FlagQuizLeaderboard()
+        {
+            // 1) Вземаме чистите данни директно от базата (без методи вътре в Select!)
+            var raw = await _context.Users
+                .OrderByDescending(u => u.FlagQuizBestScore)
+                .Take(50)
+                .ToListAsync();
+
+            // 2) Правим конверсията в C# (EF вече не участва — всичко е позволено)
+            var list = raw.Select(u => new {
+                username = u.Username,
+                bestScore = u.FlagQuizBestScore,
+                badgeImage = GetBadgeForLevel(u.Level),
+                rank = u.Rank
+            });
+
+            return Json(list);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Profile()
@@ -156,6 +258,9 @@ namespace CountriesWebApp.Controllers
             int currentXP = user.XP;
             double progressPercent = Math.Min((double)currentXP / requiredXP * 100, 100);
             int remainingXP = Math.Max(requiredXP - currentXP, 0);
+            var avatarPath = user.AvatarUrl;
+            if (string.IsNullOrEmpty(user.AvatarUrl))
+                user.AvatarUrl = "/images/avatar/default-avatar.jpg";
 
             // 🧩 Създаваме модела за View-то
             var model = new
@@ -169,7 +274,8 @@ namespace CountriesWebApp.Controllers
                 ProgressPercent = progressPercent,
                 RemainingXP = remainingXP,
                 Rank = rank,
-                BadgeImage = badgeImage
+                BadgeImage = badgeImage,
+                AvatarUrl = avatarPath
             };
 
             return View(model);

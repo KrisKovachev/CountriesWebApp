@@ -1,147 +1,139 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
 
+/* GLOBAL BG */
 body {
-    font-family: 'Fjalla One', sans-serif;
-    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center center no-repeat;
-    background-size: cover;
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    color: #2A293E;
+    background: linear-gradient(145deg, #f4efd7, #ece3bb);
+    transition: background 0.3s ease;
 }
 
-    body::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(120deg, rgba(255, 200, 255, 0.15), rgba(149, 164, 255, 0.25));
-        backdrop-filter: blur(3px);
-        z-index: 0;
+    /* DARK MODE BG */
+    body.dark-mode {
+        background: linear-gradient(145deg, #0f1117, #1a1c23) !important;
     }
 
-    body * {
-        position: relative;
-        z-index: 1;
-    }
-
-/* 🎮 Основен контейнер */
+/* MAIN CARD */
 .gamemode-container {
-    background: #f8f4e5;
-    padding: 50px 70px;
-    border: 2px solid #000;
+    margin-top: 80px;
+    background: #fbf8ed;
+    padding: 55px 70px;
     border-radius: 16px;
-    box-shadow: 15px 15px 0 #ffa580, 15px 15px 0 2px #000;
-    text-align: center;
-    max-width: 700px;
-    width: 90%;
-    animation: fadeSlideUp 0.8s ease-out;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid #111;
+    box-shadow: 10px 10px 0 #ff9b70, 12px 12px 0 3px #000;
+    transition: 0.3s ease;
 }
 
-    .gamemode-container:hover {
-        transform: translateY(-5px);
-        box-shadow: 15px 18px 10px rgba(0, 0, 0, 0.25), 15px 15px 0 2px #000;
-    }
+body.dark-mode .gamemode-container {
+    background: #22252f !important;
+    border-color: #4a4d5a !important;
+    box-shadow: 10px 10px 0 #4f5bff, 12px 12px 0 3px #000 !important;
+}
 
+/* TITLE */
 h1 {
-    font-size: 28pt;
-    text-shadow: 2px 2px 0px #ffc8ff;
+    text-align: center;
+    color: #2b2347;
+    font-size: 32px;
     margin-bottom: 35px;
+    text-shadow: 2px 2px 0px #ffccff;
 }
 
-/* 🕹️ Карти с режими */
-.mode-grid {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 35px;
+body.dark-mode h1 {
+    color: #e8e6ff !important;
+    text-shadow: 0 0 8px rgba(140, 150, 255, 0.4);
 }
 
+
+/* GRID */
+/* CLEAN, READABLE GAME MODE BUTTONS */
 .mode-card {
-    width: 220px;
-    background: #fffbe9;
+    background: #ffffff; /* чист бял фон */
     border: 2px solid #000;
-    border-radius: 12px;
-    padding: 25px 20px;
-    box-shadow: 6px 6px 0 #95a4ff, 6px 6px 0 1px #000;
+    padding: 22px 25px;
+    border-radius: 14px;
     cursor: pointer;
-    transition: all 0.35s ease;
-    position: relative;
-    overflow: hidden;
+    box-shadow: 4px 4px 0 #95a4ff, 4px 4px 0 2px #000;
+    transition: 0.25s ease;
+    text-align: center;
 }
-
-    .mode-card:hover {
-        transform: translateY(-7px) scale(1.03);
-        box-shadow: 10px 10px 0 #ffa580, 10px 10px 0 1px #000;
-        background: linear-gradient(145deg, #fffbe9, #ffe6b3);
-    }
-
-    .mode-card::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at top left, rgba(255,255,255,0.4), transparent 70%);
-        opacity: 0;
-        transition: opacity 0.4s ease;
-    }
-
-    .mode-card:hover::after {
-        opacity: 1;
-    }
-
-    .mode-card img {
-        width: 85px;
-        margin-bottom: 15px;
-        filter: drop-shadow(3px 3px 0 rgba(0,0,0,0.4));
-        transition: transform 0.3s ease;
-    }
-
-    .mode-card:hover img {
-        transform: rotate(-2deg) scale(1.1);
-    }
 
     .mode-card h2 {
-        font-size: 18pt;
-        color: #2A293E;
-        text-shadow: 1px 1px 0px #ffc8ff;
-        margin-bottom: 8px;
+        margin: 0;
+        font-size: 17pt;
+        color: #2A293E; /* ЧЕТИМ ТЪМЕН ТЕКСТ */
+        text-shadow: none !important;
+        letter-spacing: 0.5px;
     }
 
-    .mode-card p {
-        font-size: 12.5pt;
-        color: #444;
-        line-height: 1.4em;
+    /* Hover – чисто, ясно, професионално */
+    .mode-card:hover {
+        background: #f0f0f0;
+        transform: translateY(-4px) scale(1.03);
     }
 
-
-
-/* ✨ Анимации */
-@keyframes fadeSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* DARK MODE */
+body.dark-mode .mode-card {
+    background: #272A33 !important;
+    border-color: #000 !important;
+    color: #f1f1f1 !important;
+    box-shadow: 4px 4px 0 #4f5bff, 4px 4px 0 2px #000 !important;
 }
 
-/* 📱 Responsive */
-@media (max-width: 600px) {
-    .gamemode-container {
-        padding: 35px 25px;
+    body.dark-mode .mode-card:hover {
+        background: #323542 !important;
     }
 
-    .mode-card {
-        width: 90%;
+    /* Dark mode text fixes */
+    body.dark-mode .mode-card h2 {
+        color: #f1f1f1 !important;
     }
 
-    h1 {
-        font-size: 22pt;
-    }
+/* DARK MODE CARDS */
+body.dark-mode .mode-card {
+    background: #2e3341 !important;
+    border-color: #000;
+    color: #e4e4e4;
+    box-shadow: 5px 5px 0px #4f5bff, 5px 5px 0px 2px #000 !important;
 }
+
+    body.dark-mode .mode-card:hover {
+        background: #4f5bff !important;
+        color: white !important;
+        transform: translateY(-4px) scale(1.04);
+        box-shadow: 5px 5px 0px #ff7b5f, 5px 5px 0px 2px #000 !important;
+    }
+
+
+/* DARK MODE TOGGLE BUTTON */
+.dark-toggle {
+    position: fixed;
+    top: 65px;
+    right: 45px;
+    padding: 10px 22px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 2px solid #000;
+    color: #222;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 3px 3px 0 #7ea1ff, 3px 3px 0 2px #000;
+    transition: all 0.25s ease;
+}
+
+    .dark-toggle:hover {
+        transform: translateY(-3px);
+        background: #000;
+        color: #fff;
+    }
+
+body.dark-mode .dark-toggle {
+    background: #2b2f38 !important;
+    color: #e8e8e8 !important;
+    border-color: #666 !important;
+    box-shadow: 3px 3px 0 #4f5bff !important;
+}
+
+    body.dark-mode .dark-toggle:hover {
+        background: #4f5bff !important;
+        color: #fff !important;
+    }

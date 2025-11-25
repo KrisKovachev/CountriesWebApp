@@ -1,0 +1,55 @@
+/* Basic global dark-mode helpers (keeps compatibility with existing per-page rules) */
+:root {
+    --panel-bg: #f8f4e5;
+    --text: #2A293E;
+    --muted: #666;
+}
+
+body.dark-mode {
+    color: #e6e6e6;
+    background: linear-gradient(145deg, #0f1117, #1a1d25) !important;
+}
+
+/* Generic container override so pages using .container look good in dark */
+body.dark-mode .container {
+    background: #2a2d36 !important;
+    color: #e6e6e6 !important;
+    border-color: #444 !important;
+    box-shadow: 12px 12px 0 #4f5bff, 12px 12px 0 2px #000 !important;
+}
+
+/* Generic inputs/buttons */
+body.dark-mode input,
+body.dark-mode textarea {
+    background: #1e2027 !important;
+    color: #f5f5f5 !important;
+    border-color: #666 !important;
+}
+
+body.dark-mode button {
+    background: linear-gradient(90deg, #3a4154, #4d5570) !important;
+    color: #e6e6e6 !important;
+    border-color: #000 !important;
+}
+
+/* Toggle style */
+.dark-toggle {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: #f3f1e8;
+    border: 2px solid #000;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #b88cff;
+    font-size: 14pt;
+    z-index: 9999;
+}
+
+body.dark-mode .dark-toggle {
+    background: #2d2f36;
+    color: #e8e8e8;
+    border-color: #555;
+    box-shadow: 3px 3px 0 #4f5bff;
+}

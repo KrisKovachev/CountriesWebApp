@@ -1,34 +1,47 @@
 ﻿@{
     Layout = "_Layout";
 }
+
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
 }
+
 @section Scripts {
-    <script src="~/js/index.js"></script>
+    <script src="~/js/index.js" asp-append-version="true"></script>
 }
-<!DOCTYPE html>
-<html lang="bg">
-<head>
-    <meta charset="UTF-8">
-    <title>Country Info</title>
-</head>
 
-<body>
-    <div class="spacer" style="height:40px;"></div>
-    <div class="container">
-        <h1>Countries</h1>
-        <input id="countryName" type="text" placeholder="Enter Country..." />
-        <button onclick="fetchCountry()">Search</button>
-        <div id="message"></div>
+<div class="dark-toggle" id="darkModeToggle">🌙 Dark Mode</div>
 
-        <div id="result" class="result">
-            <h3 id="resName"></h3>
-            <p>🏢 Capital: <span id="resCapital"></span></p>
-            <p>🌍 Region: <span id="resRegion"></span></p>
-            <p>💰 Currency: <span id="resCurrency"></span></p>
-            <img id="resFlag" src="" alt="Flag">
+<div class="spacer" style="height:40px;"></div>
+
+<div class="container">
+    <h1>Countries</h1>
+
+    <input id="countryName" type="text" placeholder="Enter Country..." />
+    <button onclick="fetchCountry()">Search</button>
+    <div id="message"></div>
+
+    <div id="result" style="display:none; margin-top:20px;">
+        <h3 id="resName"></h3>
+
+        <img id="resFlag" />
+
+        <div class="info-box">
+            <div class="info-row">
+                <span class="info-label">Capital:</span>
+                <span class="info-value" id="resCapital"></span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Region:</span>
+                <span class="info-value" id="resRegion"></span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Population:</span>
+                <span class="info-value" id="resPopulation"></span>
+            </div>
         </div>
     </div>
-</body>
-</html>
+
+</div>

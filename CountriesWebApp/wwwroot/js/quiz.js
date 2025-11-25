@@ -40,6 +40,7 @@
         }
     }
 
+
     async function updateScore() {
         if (!username) return;
         try {

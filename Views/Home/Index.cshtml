@@ -1,0 +1,32 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" />
+}
+
+@section Scripts {
+    <script src="/js/index.js"></script>
+}
+
+<div class="dark-toggle" id="darkModeToggle">🌙 Dark Mode</div>
+
+<div class="spacer" style="height:40px;"></div>
+
+<div class="container">
+    <h1>Countries</h1>
+
+    <input id="countryName" type="text" placeholder="Enter Country..." />
+    <button onclick="fetchCountry()">Search</button>
+    <div id="message"></div>
+
+    <div id="result" style="display:none; margin-top:20px;">
+        <h3 id="resName"></h3>
+        <img id="resFlag" style="width:150px; border-radius:8px; margin:10px 0;" />
+
+        <p><b>Capital:</b> <span id="resCapital"></span></p>
+        <p><b>Region:</b> <span id="resRegion"></span></p>
+        <p><b>Population:</b> <span id="resPopulation"></span></p>
+    </div>
+</div>

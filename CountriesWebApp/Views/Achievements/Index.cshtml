@@ -1,0 +1,41 @@
+﻿@model List<AchievementViewModel>
+@{
+    Layout = "_Layout";
+    ViewBag.BodyClass = "achievements-page";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/achievemetns.css" />
+}
+
+<div class="ach-wrap">
+    <h1 class="ach-title">🏆 Achievements</h1>
+
+    <div class="ach-grid">
+        @foreach (var a in Model)
+        {
+            <div class="ach-card @(a.Unlocked ? "ach-unlocked" : "ach-locked")">
+
+                <div class="ach-header">
+                    <span class="ach-icon">🏅</span>
+                    <h3>@a.Title</h3>
+                </div>
+
+                <p class="ach-desc">@a.Description</p>
+
+                <div class="ach-footer">
+                    <span class="ach-points">@a.Points pts</span>
+
+                    @if (a.Unlocked)
+                    {
+                        <span class="ach-status good">✔ Unlocked</span>
+                    }
+                    else
+                    {
+                        <span class="ach-status bad">✖ Locked</span>
+                    }
+                </div>
+
+            </div>
+        }
+    </div>
+</div>

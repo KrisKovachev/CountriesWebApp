@@ -1,24 +1,30 @@
-﻿using CountriesWebApp.Data_Base;
+﻿using CountriesWebApp.Interfaces;
 using CountriesWebApp.Services;
+using CountriesWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 💾 Конфигурация на основната база данни
+// 💾 Главна база (държави, статистики и т.н.)
 builder.Services.AddDbContext<WebAppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 💾 Конфигурация на базата данни за потребители
+// 💾 База за потребители
 builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("UserConnection")));
 
-// 🧠 Регистрираме CountryService
-builder.Services.AddScoped<CountryService>();
+// 💾 База за Achievements (ползва същата UserConnection)
+builder.Services.AddDbContext<AchievementDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UserConnection")));
 
-// ✅ Активираме MVC с Razor Views
+// 🧠 Services
+builder.Services.AddScoped<CountryService>();
+builder.Services.AddScoped<AchievementService>();
+
+// MVC + Razor
 builder.Services.AddControllersWithViews();
 
-// ✅ Добавяме поддръжка на сесии
+// Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -27,20 +33,17 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// ✅ Нужен за достъп до HttpContext в контролери и вюта
+// HttpContext
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-// 🔒 Middleware конфигурация
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
-// 🧩 Задължително преди Authorization
 app.UseSession();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(

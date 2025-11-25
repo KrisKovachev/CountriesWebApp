@@ -33,6 +33,8 @@ namespace CountriesWebApp.Models
         }
         public int XP { get; set; } = 0;
         public int Level { get; set; } = 1;
+        public int FlagQuizBestScore { get; set; } = 0;
+        public string AvatarUrl { get; set; } = "/images/avatar/default-avatar.jpg";
 
     }
 }

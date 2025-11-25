@@ -3,50 +3,76 @@
     var username = Context.Session.GetString("Username");
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/profile.css" />
-}
-
-@section Scripts {
-    <script src="~/js/profile.js"></script>
-}
-
 <!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
     <title>@username - Profile</title>
+
     <link rel="stylesheet" href="~/css/profile.css" />
     <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png">
 </head>
+
 <body>
 
     <!-- 🔘 Горни бутони -->
     <div class="button-row">
-        <a href="@Url.Action("Index", "Home")" class="nav-btn">🏠 Back</a>
-        <a href="@Url.Action("Logout", "Auth")" class="nav-btn">🚪 Logout</a>
+        <a href="@Url.Action("Index", "Home")" class="nav-btn">Back</a>
+        <a href="@Url.Action("Logout", "Auth")" class="nav-btn">Logout</a>
+        <a href="/Achievements" class="ach-btn">🏆 Achievements</a>
     </div>
 
-    <!-- 🧩 Профил контейнер -->
+    <!-- 🧩 Профилен панел -->
     <div class="profile-container">
-        <h1>👤 @username's Profile</h1>
 
-        <div class="profile-info">
-            <p><b>Username:</b> @Model.Username</p>
-            <p><b>Email:</b> @Model.Email</p>
-            <p><b>Best Score:</b> @Model.BestScore</p>
+        <div class="avatar-section">
+
+            <img src="@Model.AvatarUrl" alt="avatar" class="profile-avatar" />
+
+            <h1 class="profile-username">@username’s Profile</h1>
+
+            <form asp-action="UploadProfilePicture" asp-controller="Auth"
+                  method="post" enctype="multipart/form-data" class="avatar-upload">
+
+                <label class="upload-btn">
+                    Upload Avatar
+                    <input type="file" name="profileImage" class="upload-input" hidden />
+                </label>
+
+                <button type="submit" class="save-btn">Save</button>
+            </form>
+
         </div>
 
-        <div class="rank">
-            🏆 Rank:
-            <span>@Model.Rank</span>
+        <div class="profile-stats">
+            <div class="stat-row">
+                <span class="stat-label">👤 Username:</span>
+                <span class="stat-value">@Model.Username</span>
+            </div>
+
+            <div class="stat-row">
+                <span class="stat-label">📧 Email:</span>
+                <span class="stat-value">@Model.Email</span>
+            </div>
+
+            <div class="stat-row">
+                <span class="stat-label">⭐ Best Score:</span>
+                <span class="stat-value">@Model.BestScore</span>
+            </div>
+
+            <div class="stat-row">
+                <span class="stat-label">🏆 Rank:</span>
+                <span class="stat-value">@Model.Rank</span>
+            </div>
         </div>
 
-        <!-- 🌟 Единен Level бар и бадж -->
+
+        <!-- Level & XP -->
         <div class="level-section">
+
             <div class="level-info">
                 <span class="level-number">⭐ Level @Model.Level</span>
-                <img class="level-badge" src="@Model.BadgeImage" alt="Badge" />
+                <img class="level-badge" src="@Model.BadgeImage" alt="badge" />
             </div>
 
             <div class="xp-bar">
@@ -54,10 +80,10 @@
                 <span class="xp-text">@Model.XP / @Model.RequiredXP XP</span>
             </div>
 
-            <div class="xp-remaining">
-                <small>⬆️ Need @Model.RemainingXP XP to reach Level @(Model.Level + 1)</small>
-            </div>
+
         </div>
+
+    </div>
 
 </body>
 </html>

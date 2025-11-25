@@ -1,0 +1,525 @@
+﻿.flagquiz-container {
+    text-align: center;
+    margin-top: 40px;
+    font-family: 'Fjalla One', sans-serif;
+}
+
+.title {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.country-title {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #1e2a40; /* тъмно синьо, четимо навсякъде */
+    text-shadow: 0 0 4px rgba(255,255,255,0.7), 0 0 10px rgba(255,255,255,0.4);
+    margin-bottom: 25px;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+    /* активираме при нов рунд */
+    .country-title.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+.timer {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #3c3c3c;
+    transition: 0.3s;
+}
+
+    .timer.low {
+        color: red;
+        font-weight: bold;
+    }
+
+.flag-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 240px);
+    gap: 30px;
+    justify-content: center;
+}
+
+.flag-card {
+    width: 240px;
+    height: 150px;
+    border: 3px solid #333;
+    cursor: pointer;
+    background: url('/images/question.jpg') center center no-repeat;
+    background-size: cover;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 0.25s;
+    backdrop-filter: blur(2px);
+}
+
+    .flag-card:hover {
+        transform: scale(1.06);
+        border-color: #4d96ff;
+        box-shadow: 0 0 12px rgba(77, 150, 255, 0.6);
+    }
+
+    .flag-card img {
+        position: relative;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.35s ease-in-out;
+    }
+@keyframes pulseBlue {
+    0% {
+        transform: scale(1);
+        border-color: #6ecaff;
+        box-shadow: 0 0 6px rgba(110, 202, 255, 0.4);
+    }
+
+    50% {
+        transform: scale(1.04);
+        border-color: #96dbff;
+        box-shadow: 0 0 14px rgba(150, 219, 255, 0.65);
+    }
+
+    100% {
+        transform: scale(1);
+        border-color: #6ecaff;
+        box-shadow: 0 0 6px rgba(110, 202, 255, 0.4);
+    }
+}
+
+/* активира се под 5 секунди */
+.flag-card.time-warning {
+    animation: pulseBlue 0.7s ease-in-out infinite !important;
+    border-color: #6ecaff !important;
+}
+
+
+.score {
+    margin-top: 25px;
+    font-size: 26px;
+}
+
+.message {
+    margin-top: 12px;
+    font-size: 20px;
+}
+
+.leaderboard-box {
+    margin-top: 40px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 20px 25px;
+    border-radius: 12px;
+    width: 420px;
+    border: 2px solid #000;
+    box-shadow: 5px 5px 0 #ffa580, 5px 5px 0 1px #000;
+    text-align: left;
+}
+
+.leader-title {
+    font-size: 22px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.leaderboard-list {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.leaderboard-entry {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.badge-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.rank-num {
+    font-weight: bold;
+}
+
+.player-name {
+    flex-grow: 1;
+    font-size: 15pt;
+}
+
+.player-rank {
+    opacity: 0.7;
+    font-size: 12pt;
+}
+/* ======= FLAG ANIMATION ======= */
+.flag-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.35s ease-in-out;
+}
+
+    .flag-card img.visible {
+        opacity: 1;
+    }
+
+/* ===== GREEN CORRECT HIGHLIGHT ===== */
+.flag-card.correct {
+    border-color: #2ecc71 !important;
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.9);
+    transform: scale(1.07);
+}
+
+/* ===== RED WRONG HIGHLIGHT + SHAKE ===== */
+@keyframes shake {
+    0% {
+        transform: translateX(0px);
+    }
+
+    25% {
+        transform: translateX(-6px);
+    }
+
+    50% {
+        transform: translateX(6px);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+.flag-card.wrong {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.9);
+    animation: shake 0.35s ease;
+}
+
+/* ===== FADE OUT BEFORE NEXT ROUND ===== */
+.flag-card.fade-out img {
+    opacity: 0 !important;
+    transition: opacity 0.25s ease-in-out;
+}
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(0px); }
+}
+
+.flag-card {
+    animation: float 3.5s ease-in-out infinite;
+}
+
+/* HOVER EFFECT - subtle glow */
+.flag-card:hover {
+    box-shadow: 0 0 12px rgba(77, 150, 255, 0.4);
+    transform: scale(1.04);
+}
+
+/* POP ANIMATION on CORRECT */
+@keyframes pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+.flag-card.correct {
+    border-color: #2ecc71 !important;
+    box-shadow: 0 0 18px rgba(46, 204, 113, 0.8);
+    animation: pop 0.3s ease;
+}
+
+/* SHAKE on WRONG */
+@keyframes shake {
+    0% { transform: translateX(0px); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0px); }
+}
+
+.flag-card.wrong {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 18px rgba(231, 76, 60, 0.8);
+    animation: shake 0.4s ease;
+}
+
+/* REVEAL ANIMATION for the correct flag after wrong choice */
+.flag-card.reveal {
+    border-color: #2ecc71 !important;
+    box-shadow: 0 0 22px rgba(46, 204, 113, 0.9);
+    transition: box-shadow 0.2s ease;
+}
+
+/* FADE OUT (already added but enhanced) */
+.flag-card.fade-out img {
+    opacity: 0 !important;
+    transition: opacity 0.22s ease-in-out;
+}
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.flag-card {
+    animation: float 3.5s ease-in-out infinite;
+}
+
+    /* HOVER EFFECT - subtle glow */
+    .flag-card:hover {
+        box-shadow: 0 0 12px rgba(77, 150, 255, 0.4);
+        transform: scale(1.04);
+    }
+
+/* POP ANIMATION on CORRECT */
+@keyframes pop {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.flag-card.correct {
+    border-color: #2ecc71 !important;
+    box-shadow: 0 0 18px rgba(46, 204, 113, 0.8);
+    animation: pop 0.3s ease;
+}
+
+/* SHAKE on WRONG */
+@keyframes shake {
+    0% {
+        transform: translateX(0px);
+    }
+
+    25% {
+        transform: translateX(-6px);
+    }
+
+    50% {
+        transform: translateX(6px);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+.flag-card.wrong {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 18px rgba(231, 76, 60, 0.8);
+    animation: shake 0.4s ease;
+}
+
+/* REVEAL ANIMATION for the correct flag after wrong choice */
+.flag-card.reveal {
+    border-color: #2ecc71 !important;
+    box-shadow: 0 0 22px rgba(46, 204, 113, 0.9);
+    transition: box-shadow 0.2s ease;
+}
+
+/* FADE OUT (already added but enhanced) */
+.flag-card.fade-out img {
+    opacity: 0 !important;
+    transition: opacity 0.22s ease-in-out;
+}
+
+/* ===== REGION THEMES ===== */
+
+body.all {
+    background: radial-gradient(circle at 20% 20%, #66d0ff33, transparent 60%), radial-gradient(circle at 80% 80%, #7affd433, transparent 60%), radial-gradient(circle at 50% 50%, #dca8ff22, transparent 70%), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center/cover no-repeat fixed;
+}
+
+body.europe {
+    background: radial-gradient(circle at 30% 20%, #4a6bff3d, transparent 65%), radial-gradient(circle at 80% 60%, #ffe45d3d, transparent 65%), linear-gradient(135deg, #1e2a5033, #0f162833), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center/cover no-repeat fixed;
+}
+
+
+body.asia {
+    background: radial-gradient(circle at 70% 30%, #ff3b3b40, transparent 60%), radial-gradient(circle at 25% 75%, #ffd68a33, transparent 60%), linear-gradient(120deg, #33000022, #99000022), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center/cover no-repeat fixed;
+}
+
+
+body.africa {
+    background: radial-gradient(circle at 60% 20%, #ffc30044, transparent 70%), radial-gradient(circle at 20% 70%, #16a34a44, transparent 70%), radial-gradient(circle at 80% 80%, #ff573344, transparent 70%), linear-gradient(130deg, #3b280022, #5a3b0022), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center/cover no-repeat fixed;
+}
+
+
+body.americas {
+    background: radial-gradient(circle at 20% 30%, #0066ff44, transparent 65%), radial-gradient(circle at 80% 70%, #ff404044, transparent 65%), radial-gradient(circle at 50% 80%, #9a6bff33, transparent 65%), linear-gradient(140deg, #00153322, #33000022), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center/cover no-repeat fixed;
+}
+
+
+body.oceania {
+    background: radial-gradient(circle at 70% 25%, #00c8ff44, transparent 60%), radial-gradient(circle at 30% 80%, #00ffdd33, transparent 60%), linear-gradient(135deg, #001a2233, #004f6033), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center/cover no-repeat fixed;
+}
+
+/* ==========================
+       GLOBAL DARK MODE
+   ========================== */
+
+body.dark-mode {
+    background: linear-gradient(145deg, #0f1117, #1a1c23) !important;
+    color: #e0e6f0 !important;
+}
+
+body.dark-mode::before {
+    background: none !important;
+    backdrop-filter: none !important;
+}
+
+
+/* ==========================
+         NAVBAR FIX
+   ========================== */
+
+body.dark-mode nav {
+    background: rgba(40, 42, 54, 0.9) !important;
+    border-color: #2d2f39 !important;
+    box-shadow: 4px 4px 0 #0f1624 !important;
+}
+
+body.dark-mode nav a {
+    background: linear-gradient(90deg, #2d3444, #3a4154) !important;
+    color: #e0e6f0 !important;
+    border-color: #1a1c23 !important;
+    box-shadow: 3px 3px 0 #0c0e16 !important;
+}
+
+body.dark-mode .navbar-brand {
+    color: #e0e6f0 !important;
+    text-shadow: 2px 2px 0px #4f92ff80 !important;
+}
+
+
+/* ==========================
+      FLAG QUIZ ELEMENTS
+   ========================== */
+
+body.dark-mode .title {
+    color: #f0f4ff !important;
+    text-shadow: 0 0 12px rgba(120, 180, 255, 0.4);
+}
+
+body.dark-mode .country-title {
+    color: #d6e4ff !important;
+    text-shadow: 0 0 8px rgba(120, 180, 255, 0.25);
+}
+
+body.dark-mode #timer {
+    color: #85c8ff !important;
+}
+
+
+/* ==========================
+      FLAG CARDS DARK MODE
+   ========================== */
+
+body.dark-mode .flag-card {
+    background: #1e2027 !important;
+    border-color: #2c2f36 !important;
+    box-shadow: 0 0 14px rgba(0,0,0,0.5) !important;
+}
+
+body.dark-mode .flag-card:hover {
+    box-shadow: 0 0 14px rgba(120, 180, 255, 0.35) !important;
+}
+
+body.dark-mode .flag-card.time-warning {
+    animation: pulseBlue 0.7s ease-in-out infinite !important;
+    border-color: #6ecaff !important;
+}
+
+
+/* ==========================
+        LEADERBOARD DARK
+   ========================== */
+
+body.dark-mode .leaderboard-box {
+    background: rgba(255,255,255,0.05) !important;
+    border: 2px solid #2d2f39 !important;
+    box-shadow: 6px 6px 0 #0f1624 !important;
+    color: #e0e6f0 !important;
+}
+
+body.dark-mode .leaderboard-entry {
+    color: #e0e6f0 !important;
+}
+
+body.dark-mode .player-name {
+    color: #b7d4ff !important;
+}
+
+body.dark-mode .rank-num {
+    color: #ffc75f !important;
+}
+
+body.dark-mode .player-rank {
+    color: #bdc2d6 !important;
+}
+
+/* ================================
+       DARK MODE TOGGLE BUTTON
+   ================================ */
+
+.dark-toggle {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 9999;
+    border: 2px solid #222;
+    background: #f3f1e8;
+    color: #333;
+    box-shadow: 3px 3px 0 #b88cff;
+    transition: all 0.25s ease-in-out;
+}
+
+    .dark-toggle:hover {
+        transform: scale(1.05);
+    }
+
+/* DARK MODE LOOK */
+body.dark-mode .dark-toggle {
+    background: #2d2f36 !important;
+    color: #e5e5e5 !important;
+    border-color: #555 !important;
+    box-shadow: 3px 3px 0 #4f5bff !important;
+}
+
+    body.dark-mode .dark-toggle:hover {
+        transform: scale(1.05);
+    }

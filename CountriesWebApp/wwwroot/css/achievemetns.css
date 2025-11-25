@@ -1,0 +1,134 @@
+﻿body.achievements-page,
+html.achievements-page {
+    background: radial-gradient(circle at center, #0c1323, #06080f 70%) !important;
+}
+@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+/* GLOBAL MATCH WITH PROFILE THEME */
+body {
+    font-family: 'Fjalla One', sans-serif;
+    background: radial-gradient(circle at center, #0c1323, #06080f 70%) !important;
+    color: #e8e8e8;
+    margin: 0;
+    padding: 0;
+}
+
+/* WRAPPER */
+.ach-wrap {
+    max-width: 1000px;
+    margin: 120px auto;
+    text-align: center;
+}
+
+/* PAGE TITLE */
+.ach-title {
+    font-size: 38px;
+    margin-bottom: 40px;
+    color: #fff;
+    text-shadow: 0 0 15px #95a4ff;
+}
+
+/* GRID LAYOUT */
+.ach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 35px;
+    padding: 10px;
+}
+
+/* ACHIEVEMENT CARD – EXACT PROFILE STYLE */
+.ach-card {
+    background: rgba(18, 22, 35, 0.92);
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: left;
+    /* PROFILE SHADOW STYLE */
+    box-shadow: 12px 12px 0 #95a4ff, 12px 12px 0 2px black, 0 0 22px rgba(150,150,255,0.25);
+    transition: 0.25s ease;
+}
+
+/* UNLOCKED GLOW */
+.ach-unlocked {
+    border-color: #00e490;
+    box-shadow: 12px 12px 0 #00e490, 12px 12px 0 2px black, 0 0 28px rgba(0,255,180,0.55);
+}
+
+/* LOCKED STYLE */
+.ach-locked {
+    opacity: 0.55;
+    filter: grayscale(80%);
+}
+
+/* HOVER */
+.ach-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 12px 12px 0 #b6c2ff, 12px 12px 0 2px black, 0 0 32px rgba(140,150,255,0.7);
+}
+
+/* HEADER */
+.ach-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.ach-icon {
+    font-size: 34px;
+}
+
+.ach-header h3 {
+    margin: 0;
+    font-size: 22px;
+    color: #fff;
+    text-shadow: 0 0 10px #95a4ff;
+}
+
+/* DESCRIPTION */
+.ach-desc {
+    margin: 12px 0 18px;
+    font-size: 15px;
+    color: #d4d7ff;
+}
+
+/* FOOTER */
+.ach-footer {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ach-points {
+    font-weight: bold;
+    font-size: 15px;
+    color: #ffd36b;
+    text-shadow: 0 0 8px rgba(255,220,120,0.8);
+}
+
+.ach-status {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+    .ach-status.good {
+        color: #00ffb3;
+        text-shadow: 0 0 12px rgba(0,255,180,0.9);
+    }
+
+    .ach-status.bad {
+        color: #ff6565;
+        text-shadow: 0 0 12px rgba(255,120,120,0.8);
+    }
+
+/* DARK MODE SUPPORT */
+body.dark-mode .ach-card {
+    background: #2a2d36;
+    border-color: #444;
+    box-shadow: 12px 12px 0 #4f5bff, 12px 12px 0 2px black;
+}
+
+body.dark-mode .ach-unlocked {
+    box-shadow: 12px 12px 0 #00e490, 12px 12px 0 2px black, 0 0 30px rgba(0,255,180,0.55);
+}

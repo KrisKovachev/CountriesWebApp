@@ -1,41 +1,43 @@
 ﻿@{
     var username = Context.Session.GetString("Username");
 }
+
 <!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Country Quiz</title>
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png">
+    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png" />
+
     <style>
         @@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
 
-
-        body {
+        html, body {
             margin: 0;
+            padding: 0;
             font-family: 'Fjalla One', sans-serif;
-            background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center center no-repeat;
-            background-size: cover;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background: none !important; /* FIX #1: remove default background */
+            transition: background 0.3s ease;
         }
 
-        /* 🧭 Навигационен бар */
+        /* NAVBAR */
         nav {
-            margin-top: 10px; /* по-малко разстояние отгоре */
-            background: rgba(248, 244, 229, 0.96);
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            background: transparent !important; /* FIX #2: REMOVE LIGHT BACKGROUND */
             border: 2px solid #000;
             border-radius: 12px;
             padding: 8px 22px;
             box-shadow: 5px 5px 0px #ffa580, 5px 5px 0px 1px #000;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 14px;
+            gap: 16px;
         }
 
             nav a {
@@ -46,86 +48,188 @@
                 border: 1px solid #000;
                 border-radius: 8px;
                 background: linear-gradient(90deg, #ffa580, #95a4ff);
-                box-shadow: 3px 3px 0 #95a4ff, 3px 3px 0 1px #000;
-                transition: all 0.3s ease;
+                box-shadow: 3px 3px #95a4ff, 3px 3px 1px #000;
+                transition: 0.25s ease;
             }
 
                 nav a:hover {
-                    background: #000;
+                    background: black;
                     color: white;
                     transform: translateY(-2px) scale(1.05);
                 }
 
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 16pt;
-            text-shadow: 2px 2px 0px #ffc8ff;
-            margin-right: 10px;
+        /* DARK NAVBAR */
+        body.dark-mode nav {
+            background: #2a2d36 !important;
+            border-color: #555 !important;
+            box-shadow: 5px 5px 0px #4f5bff !important;
         }
 
-        /* 👤 Потребител вдясно */
-        .nav-user {
-            margin-left: 25px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13pt;
-        }
-
-            .nav-user span {
-                color: #2A293E;
-                font-weight: bold;
+            body.dark-mode nav a {
+                background: linear-gradient(90deg, #3a4154, #4d5570) !important;
+                color: #eee !important;
+                box-shadow: 3px 3px 0 #4f5bff !important;
             }
 
-        /* 📦 Основно съдържание */
-        main {
+        /* PAGE CONTENT WRAPPER */
+        .page-content {
+            margin-top: 110px;
             width: 100%;
-            flex-grow: 1;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            padding: 35px 0;
+            background: none !important; /* FIX #3: prevent light bar */
         }
 
-        footer {
-            margin-top: auto;
-            background: rgba(248, 244, 229, 0.9);
-            padding: 10px 15px;
-            border-top: 2px solid #000;
-            text-align: center;
-            font-size: 10pt;
-            width: 100%;
+        /* DARK MODE: fix nav text colors */
+        body.dark-mode .navbar-brand,
+        body.dark-mode .nav-user {
+            color: #e6e6e6 !important;
         }
+
+            body.dark-mode .nav-user a {
+                color: #e6e6e6 !important;
+            }
+
+        .achievement-popup {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(40px);
+            transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+        }
+
+            /* Видим state */
+            .achievement-popup.show {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            /* Малко по-мекият hide клас за излизане */
+            .achievement-popup.hide {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+        /* Вътрешния панел – Steam форма + твоя glow */
+        .achievement-popup-inner {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            min-width: 320px;
+            max-width: 420px;
+            background: rgba(10, 12, 22, 0.96);
+            border-radius: 14px;
+            border: 2px solid #000;
+            box-shadow: 10px 10px 0 #95a4ff, 10px 10px 0 2px #000, 0 0 26px rgba(120, 150, 255, 0.7);
+            backdrop-filter: blur(6px);
+        }
+
+        /* Иконка вляво */
+        .achievement-icon-area {
+            margin-right: 14px;
+        }
+
+        .achievement-icon-circle {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 20%, #ffd36b, #ff8b3d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 2px solid #000;
+            box-shadow: 0 0 10px rgba(255, 180, 80, 0.9), 0 0 20px rgba(255, 140, 60, 0.8);
+        }
+
+        /* Текстова част */
+        .achievement-text-area {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* "Achievement Unlocked" – Steam vibe */
+        .achievement-header-line {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #9fb3ff;
+            text-shadow: 0 0 8px rgba(130, 150, 255, 0.9);
+        }
+
+        /* Името на ачивмънта */
+        .achievement-title {
+            font-size: 16px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(200, 210, 255, 0.9);
+        }
+
+        /* Малко responsive: по-малък на телефони */
+        @@media (max-width: 600px) {
+            .achievement-popup
+
+        {
+            bottom: 15px;
+            right: 15px;
+        }
+
+        .achievement-popup-inner {
+            min-width: 260px;
+            max-width: 320px;
+            padding: 10px 14px;
+        }
+
+        }
+
     </style>
 
     @RenderSection("Styles", required: false)
 </head>
-<body>
+
+<body class="@ViewBag.BodyClass">
     <nav>
         <span class="navbar-brand">🌍 Country Quiz</span>
-        <a href="@Url.Action("Index", "Home")">🏠 Home</a>
-        <a href="@Url.Action("Gamemode", "Home")">🗺️Gamemode Selection</a>
+        <a href="/Home/Index">🏠 Home</a>
+        <a href="/Home/Gamemode">🗺 Gamemode Selection</a>
 
         @if (username != null)
         {
             <span class="nav-user">
                 👤 @username
-                <a href="@Url.Action("Profile", "Auth")">Profile</a>
-                <a href="@Url.Action("Logout", "Auth")">Logout</a>
+                <a href="/Auth/Profile">Profile</a>
+                <a href="/Auth/Logout">Logout</a>
             </span>
         }
         else
         {
             <span class="nav-user">
-                <a href="@Url.Action("Login", "Auth")">Login</a>
-                <a href="@Url.Action("Register", "Auth")">Register</a>
+                <a href="/Auth/Login">Login</a>
+                <a href="/Auth/Register">Register</a>
             </span>
         }
     </nav>
 
-    <main role="main">
+    <div id="achievementPopup" class="achievement-popup">
+        <div class="achievement-popup-inner">
+            <div class="achievement-icon-area">
+                <div class="achievement-icon-circle">
+                    🏆
+                </div>
+            </div>
+            <div class="achievement-text-area">
+                <div class="achievement-header-line">Achievement Unlocked</div>
+                <div class="achievement-title" id="achievementText">Flag Master I</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-content">
         @RenderBody()
-    </main>
+    </div>
 
     @RenderSection("Scripts", required: false)
 </body>

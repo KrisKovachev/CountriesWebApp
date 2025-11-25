@@ -1,0 +1,238 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8" />
+    <title>Flag Quiz – Choose Region</title>
+    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png" />
+
+    <style>
+        @@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+        * {
+            transition: all 0.25s ease-in-out;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Fjalla One', sans-serif;
+        }
+
+        /* LIGHT MODE BACKGROUND */
+        body {
+            background: linear-gradient(135deg, #f7f1d6, #f5ebb8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2A293E;
+            position: relative;
+        }
+
+            /* DARK MODE BACKGROUND */
+            body.dark-mode {
+                background: radial-gradient(circle at center, #0c1323, #06080f 70%);
+                color: #e0e6f0;
+            }
+
+        .page-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .container {
+            background: rgba(248, 244, 229, 0.95);
+            padding: 55px 70px;
+            border: 2px solid #000;
+            border-radius: 14px;
+            max-width: 520px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 10px 10px 0px #ffa580, 10px 10px 0px 3px #000;
+        }
+
+        body.dark-mode .container {
+            background: rgba(32, 33, 42, 0.95);
+            border-color: #2d2f39;
+            box-shadow: 10px 10px 0px #4f5bff, 10px 10px 0px 3px #000;
+        }
+
+        h1 {
+            font-size: 26pt;
+            margin-bottom: 35px;
+            text-shadow: 2px 2px 0px #ffc8ff;
+        }
+
+        body.dark-mode h1 {
+            color: #e6ecff;
+            text-shadow: 0 0 10px rgba(150, 200, 255, 0.35);
+        }
+
+        .mode-button {
+            width: 320px;
+            height: 55px;
+            margin: 10px auto;
+            padding: 0 16px;
+            font-size: 14pt;
+            border-radius: 10px;
+            border: 2px solid #000;
+            cursor: pointer;
+            background: linear-gradient(90deg, #ffa580, #95a4ff);
+            box-shadow: 3px 3px 0px #95a4ff, 3px 3px 0px 2px #000;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+        }
+
+            .mode-button:hover {
+                background: black;
+                color: white;
+                transform: scale(1.04) translateY(-2px);
+            }
+
+            .mode-button img {
+                width: 34px;
+                height: 22px;
+            }
+
+        body.dark-mode .mode-button {
+            background: linear-gradient(90deg, #2d3444, #3a4154);
+            border-color: #1c1e26;
+            color: #e0e6f0;
+            box-shadow: 3px 3px 0px #4f5bff, 3px 3px 0px 2px #000;
+        }
+
+            body.dark-mode .mode-button:hover {
+                background: #4f5bff;
+                color: #fff;
+            }
+
+        #backButton {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            padding: 10px 20px;
+            background: rgba(248, 244, 229, 0.95);
+            border: 2px solid #000;
+            border-radius: 8px;
+            box-shadow: 3px 3px 0px #95a4ff, 3px 3px 0px 1px #000;
+            font-size: 14pt;
+            cursor: pointer;
+        }
+
+        body.dark-mode #backButton {
+            background: #2a2d35;
+            color: #e3e3e3;
+            border-color: #3d4050;
+            box-shadow: 3px 3px 0px #4f5bff;
+        }
+
+        .footer-note {
+            margin-top: 18px;
+            font-size: 13pt;
+            opacity: 0.8;
+        }
+
+        .dark-toggle {
+            position: fixed;
+            top: 20px;
+            right: 25px;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 9999;
+            border: 2px solid #222;
+            background: #f3f1e8;
+            color: #333;
+            box-shadow: 3px 3px 0 #b88cff;
+        }
+
+        body.dark-mode .dark-toggle {
+            background: #2d2f36;
+            color: #e5e5e5;
+            border-color: #555;
+            box-shadow: 3px 3px 0 #4f5bff;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="darkModeToggle" class="dark-toggle">🌙 Dark Mode</button>
+    <button id="backButton" onclick="location.href='@Url.Action("Gamemode", "Home")'">🔙 Back</button>
+
+    <div class="page-wrapper">
+        <div class="container">
+            <h1>🏳️ Select Region</h1>
+
+            <button class="mode-button" data-region="all">🌐 All Countries</button>
+
+            <button class="mode-button" data-region="Europe">
+                <img src="/images/regions/europe.png" /> Europe
+            </button>
+
+            <button class="mode-button" data-region="Asia">
+                <img src="/images/regions/asia.png" /> Asia
+            </button>
+
+            <button class="mode-button" data-region="Africa">
+                <img src="/images/regions/africa.png" /> Africa
+            </button>
+
+            <button class="mode-button" data-region="Americas">
+                <img src="/images/regions/americas.png" /> Americas
+            </button>
+
+            <button class="mode-button" data-region="Oceania">
+                <img src="/images/regions/oceania.png" /> Oceania
+            </button>
+
+            <div class="footer-note">Select a region to begin the Flag Quiz!</div>
+        </div>
+    </div>
+
+    <script>
+        // REGION LOGIC
+        document.querySelectorAll('.mode-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const region = btn.getAttribute('data-region');
+                localStorage.setItem('region', region);
+                window.location.href = '/Home/FlagQuiz';
+            });
+        });
+
+        // DARK MODE LOGIC (унифицирано)
+        const toggle = document.getElementById("darkModeToggle");
+
+        function applyDarkMode() {
+            const dark = localStorage.getItem("darkMode") === "on";
+
+            if (dark) {
+                document.body.classList.add("dark-mode");
+                toggle.textContent = "☀️ Light Mode";
+            } else {
+                document.body.classList.remove("dark-mode");
+                toggle.textContent = "🌙 Dark Mode";
+            }
+        }
+
+        applyDarkMode();
+
+        toggle.addEventListener("click", () => {
+            const newState = !document.body.classList.contains("dark-mode");
+            localStorage.setItem("darkMode", newState ? "on" : "off");
+            applyDarkMode();
+        });
+    </script>
+</body>
+</html>

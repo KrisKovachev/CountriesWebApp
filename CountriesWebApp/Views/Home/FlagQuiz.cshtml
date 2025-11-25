@@ -1,0 +1,39 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/flagquiz.css" />
+}
+<button id="darkModeToggle" class="dark-toggle">🌙 Dark Mode</button>
+
+<div class="flagquiz-container">
+
+    <h1 class="title">🏁 Flag Quiz</h1>
+
+    <h2 id="countryName" class="country-title">Loading...</h2>
+
+    <h3 id="timer" class="timer">⏱️ Time: 15s</h3>
+
+    <div class="flag-grid">
+        <div class="flag-card"><img src="" /></div>
+        <div class="flag-card"><img src="" /></div>
+        <div class="flag-card"><img src="" /></div>
+        <div class="flag-card"><img src="" /></div>
+    </div>
+
+    <p id="score" class="score">Score: 0</p>
+    <p id="message" class="message"></p>
+
+    <div class="leaderboard-box">
+        <h3 class="leader-title">🏆 Leaderboard</h3>
+        <div id="leaderboard" class="leaderboard-list">
+            <i style="opacity:0.6;">Loading...</i>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/flagquiz.js" asp-append-version="true"></script>
+}
