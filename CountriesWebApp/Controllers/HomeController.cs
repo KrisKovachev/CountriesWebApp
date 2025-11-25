@@ -1,4 +1,4 @@
-﻿using CountriesWebApp.Models;
+﻿using CountriesWebApp.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

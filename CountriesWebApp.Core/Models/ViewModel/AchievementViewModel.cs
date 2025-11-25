@@ -1,4 +1,5 @@
-﻿public class AchievementViewModel
+﻿namespace CountriesWebApp.Core.Models.ViewModel;   
+public class AchievementViewModel
 {
     public string Code { get; set; }
     public string Title { get; set; }

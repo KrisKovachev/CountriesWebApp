@@ -1,8 +1,8 @@
 ﻿using CountriesWebApp.Core.Models;
-using CountriesWebApp.Core.Interfaces;
-using CountriesWebApp.Infrastructure.Data;
+using CountriesWebApp.Infrastructure.DataBase;
+using Microsoft.EntityFrameworkCore;
 
-namespace CountriesWebApp.Infrastructure.Services
+namespace CountriesWebApp.Core.Services 
 {
     public class AchievementService
     {

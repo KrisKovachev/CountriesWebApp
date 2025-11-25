@@ -1,4 +1,4 @@
-﻿using CountriesWebApp.Services;
+﻿using CountriesWebApp.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CountriesWebApp.Controllers

@@ -1,6 +1,6 @@
-﻿using CountriesWebApp.Interfaces;
-using CountriesWebApp.Services;
-using CountriesWebApp.Data;
+﻿using CountriesWebApp.Core.Interfaces;
+using CountriesWebApp.Core.Services;
+using CountriesWebApp.Infrastructure.DataBase;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

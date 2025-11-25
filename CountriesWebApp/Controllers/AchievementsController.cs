@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using CountriesWebApp.Models;
-using CountriesWebApp.Services;
+using CountriesWebApp.Core.Models;
+using CountriesWebApp.Core.Models.ViewModel;
+using CountriesWebApp.Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,8 +1,10 @@
 ﻿using CountriesWebApp.Core.Models;
 using CountriesWebApp.Core.Interfaces;
-using CountriesWebApp.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using CountriesWebApp.Infrastructure.DataBase;
 
-namespace CountriesWebApp.Infrastructure.Services
+namespace CountriesWebApp.Core.Services
 {
     public class CountryService
     {

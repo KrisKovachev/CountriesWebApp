@@ -1,5 +1,5 @@
-﻿using CountriesWebApp.Data;
-using CountriesWebApp.Models;
+﻿using CountriesWebApp.Infrastructure.DataBase;
+using CountriesWebApp.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;

@@ -1,6 +1,6 @@
 ﻿using CountriesWebApp.Core.Models;
 
-namespace CountriesWebApp.Core.Interfaces
+namespace CountriesWebApp.Interfaces
 {
     public interface IAchievementService
     {
