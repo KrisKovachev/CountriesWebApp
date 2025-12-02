@@ -1,0 +1,60 @@
+﻿@{
+    var username = Context.Session.GetString("Username");
+}
+
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GeoHeat</title>
+    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png" />
+
+    <!-- НЕ ЗАРЕЖДАМЕ site.css → ТО Е ТОВА, КОЕТО ТИ ЧУПИ CDN-ОВЕТЕ -->
+    @RenderSection("Styles", required: false)
+</head>
+
+<body>
+
+    <!-- NAVBAR – оставяме го, защото искаш само него -->
+    <nav style="
+        position:fixed;
+        top:10px; left:50%; transform:translateX(-50%);
+        z-index:2000;
+        background:transparent;
+        border:2px solid #000;
+        border-radius:12px;
+        padding:8px 22px;
+        box-shadow:5px 5px 0px #ffa580, 5px 5px 0px 1px #000;
+        display:flex; gap:16px; align-items:center;
+        font-family:'Fjalla One',sans-serif;
+    ">
+        <span style="font-size:14pt;">🌍 Country Quiz</span>
+        <a href="/Home/Index">🏠 Home</a>
+        <a href="/Home/Gamemode">🗺 Gamemode Selection</a>
+
+        @if (username != null)
+        {
+            <span>
+                👤 @username
+                <a href="/Auth/Profile">Profile</a>
+                <a href="/Auth/Logout">Logout</a>
+            </span>
+        }
+        else
+        {
+            <span>
+                <a href="/Auth/Login">Login</a>
+                <a href="/Auth/Register">Register</a>
+            </span>
+        }
+    </nav>
+
+    <!-- CONTENT -->
+    <main style="margin-top:110px;">
+        @RenderBody()
+    </main>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // Dark mode loading
     if (localStorage.getItem("index-dark") === "1") {
         document.documentElement.classList.add("dark-mode");
         document.body.classList.add("dark-mode");
@@ -29,7 +28,24 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 });
 
-// ГЛАВНАТА ФУНКЦИЯ – ВИКА СЕ ОТ HTML: onclick="fetchCountry()"
+// FETCH WIKIPEDIA LINK
+async function fetchWikipediaLink(countryName) {
+    try {
+        const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(countryName)}`;
+        const res = await fetch(url);
+
+        if (!res.ok) return null;
+
+        const data = await res.json();
+        return data?.content_urls?.desktop?.page ?? null;
+
+    } catch (e) {
+        console.error("Wiki fetch failed:", e);
+        return null;
+    }
+}
+
+// MAIN COUNTRY FETCH
 async function fetchCountry() {
     console.log("fetchCountry called");
 
@@ -41,7 +57,10 @@ async function fetchCountry() {
     const resCapital = document.getElementById("resCapital");
     const resRegion = document.getElementById("resRegion");
     const resPopulation = document.getElementById("resPopulation");
+    const resCurrency = document.getElementById("resCurrency");
     const resFlag = document.getElementById("resFlag");
+
+    const wikiLink = document.getElementById("wikiLink");
 
     if (!name) {
         message.innerHTML = "<span style='color:red;'>Please enter a country name.</span>";
@@ -74,22 +93,48 @@ async function fetchCountry() {
 
         const country = data[0];
 
-        // Fill UI
-        resName.textContent = country.name && country.name.common ? country.name.common : "Unknown";
-        resCapital.textContent = Array.isArray(country.capital) && country.capital.length > 0
-            ? country.capital[0]
-            : "No capital";
+        // Name
+        resName.textContent = country.name?.common ?? "Unknown";
 
+        // Capital
+        resCapital.textContent =
+            Array.isArray(country.capital) && country.capital.length > 0
+                ? country.capital[0]
+                : "No capital";
+
+        // Region
         resRegion.textContent = country.region || "Unknown";
+
+        // Population
         resPopulation.textContent = country.population
             ? country.population.toLocaleString()
             : "Unknown";
 
-        if (country.flags && (country.flags.png || country.flags.svg)) {
+        // Currency (NEW FEATURE)
+        if (country.currencies) {
+            const code = Object.keys(country.currencies)[0];    // e.g. "EUR"
+            const cur = country.currencies[code];               // { name: "...", symbol: "€" }
+            const symbol = cur.symbol ? ` (${cur.symbol})` : "";
+            resCurrency.textContent = `${cur.name}${symbol}`;
+        } else {
+            resCurrency.textContent = "Unknown";
+        }
+
+        // Flag
+        if (country.flags?.png || country.flags?.svg) {
             resFlag.src = country.flags.png || country.flags.svg;
             resFlag.style.display = "block";
         } else {
             resFlag.style.display = "none";
+        }
+
+        // Wikipedia link
+        const wikiUrl = await fetchWikipediaLink(country.name.common);
+        if (wikiUrl) {
+            wikiLink.href = wikiUrl;
+            wikiLink.style.display = "inline-block";
+        } else {
+            wikiLink.style.display = "none";
         }
 
         resultBox.style.display = "block";

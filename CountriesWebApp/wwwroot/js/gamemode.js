@@ -23,7 +23,8 @@
         flagMode: "/Home/Menu",
         capitalMode: "/Home/Capital",
         geoheatMode: "/Home/GeoHeat",
-        flagquizMode: "/Home/FlagMenu"
+        flagquizMode: "/Home/FlagMenu",
+        bgGeoMode: "/Home/BgGeoHeat"
     };
 
     Object.keys(routes).forEach(id => {

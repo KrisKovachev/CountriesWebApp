@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/bggeoheat.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/bggeoheat.js" asp-append-version="true"></script>
+}
+
+<div class="dark-toggle" id="darkModeToggle">🌙 Dark Mode</div>
+
+<div class="bggeo-page">
+    <div class="bggeo-sidebar">
+        <h1>🇧🇬 BG GeoHeat Guess</h1>
+        <p class="subtitle">
+            Намери тайната област. Цветът показва колко си близо.
+        </p>
+
+        <div class="stats">
+            <div><span>Разстояние:</span> <span id="distValue">—</span></div>
+            <div><span>Опити:</span> <span id="triesValue">0</span></div>
+        </div>
+
+        <p class="hint">
+            Кликни върху област на картата.
+            Зелен = много близо • Червен = много далеч.
+        </p>
+    </div>
+
+    <div class="bggeo-main">
+        <h2>Карта на областите</h2>
+
+        <div class="map-wrapper">
+            @Html.Raw(System.IO.File.ReadAllText("wwwroot/images/bg-regions.svg"))
+            <div id="heatTooltip" class="heat-tooltip" style="display:none;"></div>
+        </div>
+        <!-- Custom Victory Popup -->
+        <div id="victoryModal" class="modal-overlay" style="display:none;">
+            <div class="modal-box">
+                <h1 class="modal-title">🎉 Победа!</h1>
+                <p class="modal-body">
+                    Позна тайната област:<br>
+                    <span id="victoryRegion" class="modal-region"></span>
+                </p>
+                <div class="modal-buttons">
+                    <button id="newGameBtn" class="modal-btn modal-primary">Нова игра</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,212 +1,142 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
 
-/* 🌗 LIGHT MODE (default) */
-html, body {
+.geoheat-page {
+    min-height: calc(100vh - 80px);
+    padding: 40px 0 60px;
+    background: radial-gradient(circle at center, #0c1323, #05070f 70%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     font-family: 'Fjalla One', sans-serif;
-    background: linear-gradient(135deg, #a8edea, #fed6e3);
-    margin: 0;
-    padding: 0;
-    height: auto;
-    overflow-y: auto;
-    transition: background 0.35s ease-in-out;
+    color: #f0f0f0;
 }
 
-    /* 🌑 DARK MODE BACKGROUND */
-    body.dark-mode {
-        background: linear-gradient(145deg, #0f1117, #1a1c23) !important;
-    }
-
-/* MAIN WRAPPER */
-.geo-wrapper {
+.geoheat-inner {
+    width: min(960px, 100%);
     text-align: center;
-    width: 90%;
-    max-width: 900px;
-    background: #fff8f0;
-    padding: 30px 40px;
-    border-radius: 12px;
-    border: 2px solid #000;
-    box-shadow: 10px 10px 0 #ffa580, 10px 10px 0 2px #000;
-    margin: 120px auto 50px;
-    transition: 0.35s ease;
 }
 
-/* DARK MODE WRAPPER */
-body.dark-mode .geo-wrapper {
-    background: #2a2d36 !important;
-    border-color: #444 !important;
-    box-shadow: 10px 10px 0 #4f5bff, 10px 10px 0 2px #000 !important;
+.geoheat-title {
+    margin-bottom: 20px;
+    font-size: 36px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 14px rgba(0, 180, 255, 0.7);
 }
 
-/* TITLES */
-h1 {
-    margin-top: 0;
-    font-size: 28pt;
-    text-shadow: 2px 2px 0 #ffc8ff;
-}
-
-body.dark-mode h1 {
-    color: #e0e8ff;
-    text-shadow: 0px 0px 10px rgba(140,160,255,0.4);
-}
-
-.subtitle {
-    margin-top: -5px;
-    color: #333;
-    font-size: 13pt;
-}
-
-body.dark-mode .subtitle {
-    color: #d6d6d6;
-}
-
-/* MAP CONTAINER — НЕ ПИПАМЕ! */
-#map {
-    height: 60vh;
+.geoheat-globe {
+    position: relative;
     width: 100%;
-    border: 2px solid #000;
-    border-radius: 12px;
-    box-shadow: 5px 5px 0 #95a4ff, 5px 5px 0 1px #000;
-    margin: 15px 0;
+    height: 540px;
+    margin: 0 auto;
+    border-radius: 18px;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #050814, #020309);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+    /* центрираме всичко вътре (canvas-а) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#globeContainer canvas {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
 }
 
-/* INPUT + BUTTONS */
-.guess-container {
+
+.geoheat-controls {
+    margin-top: 25px;
+}
+
+.geoheat-input-row {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 5px;
+    flex-wrap: wrap;
 }
 
-/* 🌗 INPUT */
-input {
-    width: 60%;
-    font-size: 14pt;
-    padding: 8px 12px;
-    border: 2px solid #000;
-    border-radius: 8px;
-    outline: none;
-    transition: 0.25s;
-}
-
-body.dark-mode input {
-    background: #1e2027;
-    color: #f5f5f5;
-    border-color: #666;
-}
-
-/* 🌗 BUTTONS */
-button {
-    background: linear-gradient(90deg, #ffa580, #95a4ff);
-    border: 2px solid #000;
-    border-radius: 8px;
-    font-size: 14pt;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: 0.25s;
-}
-
-    button:hover {
-        background: #000;
-        color: #fff;
+    .geoheat-input-row input {
+        padding: 11px 14px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        width: 260px;
+        background: #151a2b;
+        color: #f0f0f0;
+        font-size: 15px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.6) inset;
     }
 
-body.dark-mode button {
-    background: linear-gradient(90deg, #3a4154, #4f5bff) !important;
-    color: #eee !important;
-    border-color: #000 !important;
-}
+        .geoheat-input-row input::placeholder {
+            color: #777f9c;
+        }
 
-/* GIVE UP BUTTON */
-.give-up {
-    background: linear-gradient(90deg, #ff8080, #ffb3b3) !important;
-}
+    .geoheat-input-row button {
+        padding: 11px 22px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        background: linear-gradient(135deg, #3a57ff, #00d4ff);
+        color: #ffffff;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, filter 0.1s ease-out;
+    }
 
-body.dark-mode .give-up {
-    background: linear-gradient(90deg, #c35757, #b37272) !important;
-    color: #fff !important;
-}
+        .geoheat-input-row button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.08);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.7);
+        }
 
-/* LIST */
-#guesses-list {
+        .geoheat-input-row button:active {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+        }
+
+.geoheat-message {
     margin-top: 15px;
-    max-height: 120px;
+    min-height: 22px;
+    font-size: 15px;
+}
+
+.geoheat-guess-list {
+    margin: 18px auto 0;
+    max-width: 360px;
+    max-height: 260px;
     overflow-y: auto;
     text-align: left;
-    background: #fff;
-    border: 2px solid #000;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 3px 3px 0 #95a4ff;
-    transition: 0.3s;
 }
 
-body.dark-mode #guesses-list {
-    background: #23252d;
-    border-color: #555;
+.geoheat-guess-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    background: rgba(10, 15, 30, 0.9);
+    font-size: 14px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
-/* WIN POPUP */
-.win-popup {
-    position: fixed;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #fff8e5;
-    border: 3px solid #000;
-    padding: 25px 40px;
-    font-size: 20pt;
-    font-weight: bold;
-    border-radius: 12px;
-    box-shadow: 8px 8px 0 #95a4ff, 8px 8px 0 2px #000;
-    text-align: center;
-    animation: popWin 2.5s ease-in-out;
-    z-index: 10000;
-}
-
-body.dark-mode .win-popup {
-    background: #2a2d36;
-    color: #ddd;
-    box-shadow: 8px 8px 0 #4f5bff, 8px 8px 0 2px #000;
-}
-
-@keyframes popWin {
-    0% {
-        transform: translate(-50%, -55%) scale(0.8);
-        opacity: 0;
+    .geoheat-guess-item span.name {
+        font-weight: bold;
     }
 
-    20% {
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 1;
+    .geoheat-guess-item span.dist {
+        font-family: monospace;
+        opacity: 0.9;
     }
 
-    80% {
-        transform: translate(-50%, -50%) scale(1.0);
-        opacity: 1;
+@media (max-width: 768px) {
+    .geoheat-title {
+        font-size: 26px;
     }
 
-    100% {
-        transform: translate(-50%, -50%) scale(1.0);
-        opacity: 0;
+    .geoheat-globe {
+        height: 380px;
     }
-}
-.dark-toggle {
-    position: fixed;
-    top: 90px;
-    right: 40px;
-    padding: 10px 18px;
-    background: #fff8f0;
-    border: 2px solid #000;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 3px 3px 0 #95a4ff;
-    z-index: 9999;
-    transition: 0.3s;
-}
-
-body.dark-mode .dark-toggle {
-    background: #2a2d36;
-    color: #ddd;
-    border-color: #444;
-    box-shadow: 3px 3px 0 #4f5bff;
 }

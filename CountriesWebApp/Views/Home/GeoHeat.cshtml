@@ -1,50 +1,37 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = "_LayoutGeoHeat";
+    ViewData["Title"] = "GeoHeat";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="~/css/geoheat.css" />
 }
 
 @section Scripts {
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- ПЪЛЕН D3 (UMD), прави window.d3 -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+    <!-- Globe.gl, чете от window.THREE / window.d3 -->
+    <script src="https://cdn.jsdelivr.net/npm/globe.gl"></script>
+
+    <!-- Твоят game script -->
     <script src="~/js/geoheat.js"></script>
 }
-<button id="darkModeToggle" class="dark-toggle">🌙 Dark Mode</button>
 
-<div class="geo-wrapper">
-    <h1>🌍 GeoHeat Mode</h1>
-    <p class="subtitle">Guess the secret country! The greener the color — the closer your guess.</p>
+<div class="geoheat-page">
+    <div class="geoheat-inner">
+        <h1 class="geoheat-title">GeoHeat — Guess the Country</h1>
 
-    <div id="map"></div>
+        <div id="globeContainer" class="geoheat-globe"></div>
 
-    <div class="guess-container">
-        <input id="countryInput" placeholder="Enter country name..." autocomplete="off" />
-        <button id="guessBtn">Guess</button>
-        <button id="giveUpBtn">Give Up</button>
+        <div class="geoheat-controls">
+            <div class="geoheat-input-row">
+                <input id="countryInput" type="text" placeholder="Enter country name..." autocomplete="off" />
+                <button id="guessBtn">GUESS</button>
+            </div>
+
+            <div id="message" class="geoheat-message"></div>
+            <div id="guessList" class="geoheat-guess-list"></div>
+        </div>
     </div>
-
-    <div id="message"></div>
-
-    <div id="guesses-list"></div>
-
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const btn = document.getElementById("darkModeToggle");
-
-        if (localStorage.getItem("geo-dark") === "1") {
-            document.body.classList.add("dark-mode");
-            btn.textContent = "☀️ Light Mode";
-        }
-
-        btn.addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
-            const isDark = document.body.classList.contains("dark-mode");
-            localStorage.setItem("geo-dark", isDark ? "1" : "0");
-            btn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
-        });
-    });
-</script>
-

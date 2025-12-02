@@ -25,6 +25,10 @@ namespace CountriesWebApp.Controllers
             return View();
         }
 
+        public IActionResult BgGeoHeat()
+        {
+            return View();
+        }
 
         public IActionResult FlagQuiz(string continent)
         {
