@@ -23,7 +23,13 @@ namespace CountriesWebApp.Controllers
 
             return Ok(country);
         }
-
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var all = await _countryService.GetAllCountriesAsync();
+            return Ok(all);
+        }
 
     }
+
 }

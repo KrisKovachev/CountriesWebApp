@@ -1,34 +1,67 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = null;
 }
-@section Styles {
-    <link rel="stylesheet" href="~/css/quiz.css" />
-}
-@section Scripts {
-    <script src="~/js/quiz.js"></script>
-}
+
 <!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Country Quiz</title>
-</head>
-<body>
-    <audio id="bgMusic" src="/sound/game.mp3" autoplay loop></audio>
 
+    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png" />
+    <link rel="stylesheet" href="~/css/quiz.css" asp-append-version="true" />
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="nav-brand">Country Quiz</span>
+            <a href="@Url.Action("Index", "Home")">Home</a>
+            <a href="@Url.Action("GameMode", "Home")">Modes</a>
+        </div>
+        <div class="nav-right">
+            <a href="@Url.Action("Profile", "Auth")">Profile</a>
+            <a href="@Url.Action("Logout", "Auth")">Logout</a>
+        </div>
+    </nav>
+
+    <div class="nav-spacer"></div>
+
+    <audio id="bgMusic" src="~/sound/game.mp3" autoplay loop></audio>
+
+    <!-- ❗ НЕ ПИПАНА СТРУКТУРА -->
     <div class="container">
         <h1>Guess the Country!</h1>
+
         <img id="flag" src="" alt="Flag" />
+
         <div id="timer">⏱️ Time: 15s</div>
-        <input id="answer" type="text" placeholder="Enter country name..." autocomplete="off" />
-        <div>
+
+        <input id="answer"
+               type="text"
+               placeholder="Enter country name..."
+               autocomplete="off" />
+
+        <div class="btn-row">
             <button id="checkBtn">Check</button>
             <button id="nextBtn">Next</button>
         </div>
+
         <div id="message"></div>
         <div id="score">Score: 0</div>
+
+        <!-- LEADERBOARD -->
         <div id="leaderboard"></div>
     </div>
+
+    <!-- ❗ ПЪРВО БИБЛИОТЕКАТА -->
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+
+    <!-- ❗ ПОСЛЕ ТВОЯ JS -->
+    <script src="~/js/quiz.js" asp-append-version="true"></script>
 
     <script>
         const bgMusic = document.getElementById('bgMusic');
@@ -37,7 +70,6 @@
             document.body.addEventListener('click', () => bgMusic.play(), { once: true })
         );
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
 
 </body>
 </html>

@@ -9,30 +9,31 @@
     <meta charset="UTF-8">
     <title>@username - Profile</title>
 
-    <link rel="stylesheet" href="~/css/profile.css" />
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
     <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png">
 </head>
 
 <body>
 
-    <!-- 🔘 Горни бутони -->
+    <!-- 🔘 TOP BUTTONS -->
     <div class="button-row">
         <a href="@Url.Action("Index", "Home")" class="nav-btn">Back</a>
         <a href="@Url.Action("Logout", "Auth")" class="nav-btn">Logout</a>
         <a href="/Achievements" class="ach-btn">🏆 Achievements</a>
     </div>
 
-    <!-- 🧩 Профилен панел -->
+    <!-- 🧩 PROFILE CARD -->
     <div class="profile-container">
 
         <div class="avatar-section">
-
             <img src="@Model.AvatarUrl" alt="avatar" class="profile-avatar" />
-
             <h1 class="profile-username">@username’s Profile</h1>
 
-            <form asp-action="UploadProfilePicture" asp-controller="Auth"
-                  method="post" enctype="multipart/form-data" class="avatar-upload">
+            <form asp-action="UploadProfilePicture"
+                  asp-controller="Auth"
+                  method="post"
+                  enctype="multipart/form-data"
+                  class="avatar-upload">
 
                 <label class="upload-btn">
                     Upload Avatar
@@ -41,35 +42,30 @@
 
                 <button type="submit" class="save-btn">Save</button>
             </form>
-
         </div>
 
+        <!-- STATS -->
         <div class="profile-stats">
             <div class="stat-row">
-                <span class="stat-label">👤 Username:</span>
+                <span class="stat-label">Username:</span>
                 <span class="stat-value">@Model.Username</span>
             </div>
-
             <div class="stat-row">
-                <span class="stat-label">📧 Email:</span>
+                <span class="stat-label">Email:</span>
                 <span class="stat-value">@Model.Email</span>
             </div>
-
             <div class="stat-row">
-                <span class="stat-label">⭐ Best Score:</span>
+                <span class="stat-label">Best Score:</span>
                 <span class="stat-value">@Model.BestScore</span>
             </div>
-
             <div class="stat-row">
-                <span class="stat-label">🏆 Rank:</span>
+                <span class="stat-label">Rank:</span>
                 <span class="stat-value">@Model.Rank</span>
             </div>
         </div>
 
-
-        <!-- Level & XP -->
+        <!-- LEVEL -->
         <div class="level-section">
-
             <div class="level-info">
                 <span class="level-number">⭐ Level @Model.Level</span>
                 <img class="level-badge" src="@Model.BadgeImage" alt="badge" />
@@ -79,8 +75,6 @@
                 <div class="xp-fill" style="width:@Model.ProgressPercent%;"></div>
                 <span class="xp-text">@Model.XP / @Model.RequiredXP XP</span>
             </div>
-
-
         </div>
 
     </div>

@@ -1,39 +1,68 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = null;
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/flagquiz.css" />
-}
-<button id="darkModeToggle" class="dark-toggle">🌙 Dark Mode</button>
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<div class="flagquiz-container">
+    <title>Flag Quiz</title>
 
-    <h1 class="title">🏁 Flag Quiz</h1>
+    <link rel="shortcut icon" href="/images/fav_icon.png" type="image/png" />
+    <link rel="stylesheet" href="/css/flagquiz.css" />
+</head>
 
-    <h2 id="countryName" class="country-title">Loading...</h2>
+<body>
 
-    <h3 id="timer" class="timer">⏱️ Time: 15s</h3>
-
-    <div class="flag-grid">
-        <div class="flag-card"><img src="" /></div>
-        <div class="flag-card"><img src="" /></div>
-        <div class="flag-card"><img src="" /></div>
-        <div class="flag-card"><img src="" /></div>
-    </div>
-
-    <p id="score" class="score">Score: 0</p>
-    <p id="message" class="message"></p>
-
-    <div class="leaderboard-box">
-        <h3 class="leader-title">🏆 Leaderboard</h3>
-        <div id="leaderboard" class="leaderboard-list">
-            <i style="opacity:0.6;">Loading...</i>
+    <!-- NAVBAR (само дизайн) -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="nav-brand">Country Quiz</span>
+            <a href="/Home/Index">Home</a>
+            <a href="/Home/GameMode">Modes</a>
         </div>
+        <div class="nav-right">
+            <a href="/Auth/Profile">Profile</a>
+            <a href="/Auth/Logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="nav-spacer"></div>
+
+    <!-- ORIGINAL STRUCTURE (НЕ СЕ ПИПА) -->
+    <div class="flagquiz-container">
+
+        <h1 class="title">🏁 Flag Quiz</h1>
+
+        <h2 id="countryName" class="country-title">Loading...</h2>
+
+        <h3 id="timer" class="timer">⏱️ Time: 15s</h3>
+
+        <div class="flag-grid">
+            <div class="flag-card"><img src="" alt="flag" /></div>
+            <div class="flag-card"><img src="" alt="flag" /></div>
+            <div class="flag-card"><img src="" alt="flag" /></div>
+            <div class="flag-card"><img src="" alt="flag" /></div>
+        </div>
+
+        <p id="score" class="score">Score: 0</p>
+        <p id="message" class="message"></p>
+
+        <div class="leaderboard-box">
+            <h3 class="leader-title">🏆 Leaderboard</h3>
+
+            <!-- Точно както беше при теб (ID + CLASS) -->
+            <div id="leaderboard" class="leaderboard-list">
+                <i style="opacity:0.6;">Loading...</i>
+            </div>
+        </div>
+
     </div>
 
-</div>
+    <!-- JS (НЕ СЕ ПИПА) -->
+    <script src="/js/flagquiz.js" asp-append-version="true"></script>
 
-@section Scripts {
-    <script src="~/js/flagquiz.js" asp-append-version="true"></script>
-}
+</body>
+</html>

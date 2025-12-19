@@ -15,5 +15,8 @@ namespace CountriesWebApp.Core.Models
         public long Population { get; set; }
         public double Area { get; set; }
         public string Language { get; set; } = string.Empty;
+        public string Code { get; set; }  // ISO_A3 / cca3
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

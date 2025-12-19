@@ -1,58 +1,97 @@
-﻿@{
-    Layout = "_Layout";
+﻿@using Microsoft.AspNetCore.Http
+@{
+    Layout = null;
+    var username = Context.Session.GetString("Username");
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/index.css" />
-}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-@section Scripts {
-    <script src="~/js/index.js" asp-append-version="true"></script>
-}
+    <title>Countries</title>
 
-<div class="dark-toggle" id="darkModeToggle">🌙 Dark Mode</div>
+    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png" />
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+</head>
 
-<div class="spacer" style="height:40px;"></div>
+<body>
 
-<div class="container">
-    <h1>Countries</h1>
-
-    <input id="countryName" type="text" placeholder="Enter Country..." />
-    <button onclick="fetchCountry()">Search</button>
-    <div id="message"></div>
-
-    <div id="result" style="display:none; margin-top:20px;">
-        <h3 id="resName"></h3>
-
-        <img id="resFlag" />
-
-        <div class="info-box">
-            <div class="info-row">
-                <span class="info-label">Capital:</span>
-                <span class="info-value" id="resCapital"></span>
-            </div>
-
-            <div class="info-row">
-                <span class="info-label">Region:</span>
-                <span class="info-value" id="resRegion"></span>
-            </div>
-
-            <div class="info-row">
-                <span class="info-label">Population:</span>
-                <span class="info-value" id="resPopulation"></span>
-            </div>
-
-            <div class="info-row">
-                <span class="info-label">Currency:</span>
-                <span class="info-value" id="resCurrency"></span>
-            </div>
+    <!-- NAVBAR -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="nav-brand">
+                <img src="/images/fav_icon.png" class="favicon" />
+                Country Quiz
+            </span>
+            <a href="/Home/Index">Home</a>
+            <a href="/Home/Gamemode">Gamemode</a>
         </div>
 
-        <!-- WIKIPEDIA BUTTON -->
-        <div style="margin-top:20px;">
-            <a id="wikiLink" href="#" target="_blank" style="display:none;">
-                <img src="~/images/wikipedia.png" class="wiki-icon" />
-            </a>
+        <div class="nav-right">
+            @if (username != null)
+            {
+                <span class="nav-user">
+                    👤 @username
+                    <a href="/Auth/Profile">Profile</a>
+                    <a href="/Auth/Logout">Logout</a>
+                </span>
+            }
+            else
+            {
+                <a href="/Auth/Login">Login</a>
+                <a href="/Auth/Register">Register</a>
+            }
+        </div>
+    </nav>
+
+    <!-- SPACER FOR FIXED NAV -->
+    <div style="height:100px;"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <h1>Countries</h1>
+
+        <input id="countryName" type="text" placeholder="Enter Country..." />
+        <button onclick="fetchCountry()">Search</button>
+        <div id="message"></div>
+
+        <div id="result" style="display:none; margin-top:20px;">
+            <h3 id="resName"></h3>
+
+            <img id="resFlag" />
+
+            <div class="info-box">
+                <div class="info-row">
+                    <span class="info-label">Capital:</span>
+                    <span class="info-value" id="resCapital"></span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Region:</span>
+                    <span class="info-value" id="resRegion"></span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Population:</span>
+                    <span class="info-value" id="resPopulation"></span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Currency:</span>
+                    <span class="info-value" id="resCurrency"></span>
+                </div>
+            </div>
+
+            <div style="margin-top:20px;">
+                <a id="wikiLink" href="#" target="_blank" style="display:none;">
+                    <img src="~/images/wikipedia.png" class="wiki-icon" />
+                </a>
+            </div>
         </div>
     </div>
-</div>
+
+    <script src="~/js/index.js" asp-append-version="true"></script>
+</body>
+</html>

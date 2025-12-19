@@ -1,25 +1,68 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = null;
 }
 
-@section Styles {
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Choose Gamemode</title>
+
+    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png" />
     <link rel="stylesheet" href="~/css/gamemode.css" asp-append-version="true" />
-}
+</head>
 
-<button id="darkModeToggle" class="dark-toggle">🌙 Dark Mode</button>
+<body>
 
-<div class="gamemode-container">
-    <h1>🎮 Choose Gamemode</h1>
+    <!-- NAVBAR -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="nav-brand">
+                <img src="~/images/fav_icon.png" class="favicon" />
+                Country Quiz
+            </span>
+            <a href="/Home/Index">Home</a>
+            <a href="/Home/Gamemode">Gamemode</a>
+        </div>
 
-    <div class="mode-grid">
-        <div class="mode-card" id="flagMode"><h2>🌍 Guess the Flag</h2></div>
-        <div class="mode-card" id="capitalMode"><h2>🏙️ Guess the Capital</h2></div>
-        <div class="mode-card" id="geoheatMode"><h2>🧩 Mystery Country</h2></div>
-        <div class="mode-card" id="flagquizMode"><h2>🏁 Flag Quiz</h2></div>
-        <div class="mode-card" id="bgGeoMode"><h2> BG GeoHeat</h2></div>
+        <div class="nav-right">
+            <a href="/Auth/Profile">Profile</a>
+            <a href="/Auth/Logout">Logout</a>
+        </div>
+    </nav>
+
+
+    <div style="height:100px;"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="gamemode-container">
+        <h1>Choose Gamemode</h1>
+
+        <div class="gamemode-grid">
+            <div class="mode-card" id="flagMode">
+                <h2>Guess the Flag</h2>
+            </div>
+
+            <div class="mode-card" id="capitalMode">
+                <h2>Guess the Capital</h2>
+            </div>
+
+            <div class="mode-card" id="geoheatMode">
+                <h2>Mystery Country</h2>
+            </div>
+
+            <div class="mode-card" id="flagquizMode">
+                <h2>Flag Quiz</h2>
+            </div>
+
+            <div class="mode-card" id="bgGeoMode">
+                <h2>BG GeoHeat</h2>
+            </div>
+        </div>
     </div>
-</div>
 
-@section Scripts {
     <script src="~/js/gamemode.js" asp-append-version="true"></script>
-}
+</body>
+</html>

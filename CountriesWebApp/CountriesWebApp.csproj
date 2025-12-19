@@ -26,12 +26,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="wwwroot\images\avatars\" />
+	  <ProjectReference Include="..\CountriesWebApp.Core\CountriesWebApp.Core.csproj" />
+	  <ProjectReference Include="..\CountriesWebApp.Infrastructure\CountriesWebApp.Infrastructure.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\CountriesWebApp.Core\CountriesWebApp.Core.csproj" />
-	  <ProjectReference Include="..\CountriesWebApp.Infrastructure\CountriesWebApp.Infrastructure.csproj" />
+	  <Folder Include="wwwroot\images\avatars\" />
 	</ItemGroup>
 
 

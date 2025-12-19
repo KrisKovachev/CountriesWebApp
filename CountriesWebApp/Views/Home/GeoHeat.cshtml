@@ -1,37 +1,76 @@
 ﻿@{
-    Layout = "_LayoutGeoHeat";
-    ViewData["Title"] = "GeoHeat";
+    Layout = null;
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/geoheat.css" />
-}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-@section Scripts {
-    <!-- ПЪЛЕН D3 (UMD), прави window.d3 -->
-    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <title>GeoHeat</title>
 
-    <!-- Globe.gl, чете от window.THREE / window.d3 -->
-    <script src="https://cdn.jsdelivr.net/npm/globe.gl"></script>
+    <link rel="shortcut icon" href="/images/fav_icon.png" type="image/png" />
 
-    <!-- Твоят game script -->
-    <script src="~/js/geoheat.js"></script>
-}
+    <!-- Leaflet -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-<div class="geoheat-page">
-    <div class="geoheat-inner">
-        <h1 class="geoheat-title">GeoHeat — Guess the Country</h1>
+    <!-- GeoHeat style -->
+    <link rel="stylesheet" href="/css/geoheat.css?v=2" />
+</head>
 
-        <div id="globeContainer" class="geoheat-globe"></div>
+<body class="geoheat-bg">
 
-        <div class="geoheat-controls">
-            <div class="geoheat-input-row">
-                <input id="countryInput" type="text" placeholder="Enter country name..." autocomplete="off" />
-                <button id="guessBtn">GUESS</button>
-            </div>
-
-            <div id="message" class="geoheat-message"></div>
-            <div id="guessList" class="geoheat-guess-list"></div>
+    <!-- NAVBAR (същия стил като Capital) -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="nav-brand">Country Quiz</span>
+            <a href="/Home/Index">Home</a>
+            <a href="/Home/GameMode">Modes</a>
         </div>
-    </div>
-</div>
+
+        <div class="nav-right">
+            <a href="/Auth/Profile">Profile</a>
+            <a href="/Auth/Logout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="geoheat-page">
+
+        <div class="geoheat-inner">
+            <div class="geoheat-card">
+
+                <h1 class="geoheat-title">GeoHeat — Guess the Country</h1>
+
+                <!-- MAP (НЕ ПИПАМЕ) -->
+                <div id="map" class="geoheat-map"></div>
+
+                <div class="geoheat-controls">
+
+                    <div class="geoheat-input-row">
+                        <input id="countryInput"
+                               type="text"
+                               placeholder="Enter country name or code (e.g. Bulgaria, BG, USA)..."
+                               autocomplete="off" />
+
+                        <button id="guessBtn">GUESS</button>
+                        <button id="giveUpBtn">GIVE UP</button>
+                    </div>
+
+                    <div id="message" class="geoheat-message"></div>
+
+                    <div id="guessList" class="geoheat-guess-list"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SCRIPTS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/js/geoheat.js"></script>
+
+</body>
+</html>

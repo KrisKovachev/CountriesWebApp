@@ -1,51 +1,41 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = null;
 }
-@section Styles {
-    <link rel="stylesheet" href="~/css/quiz.css" />
-    <style>
-        /* Малко оформление за 4-те отговора в мрежа 2x2 */
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 12px 0 6px;
-        }
 
-        .option-btn.correct {
-            outline: 3px solid #27ae60;
-        }
-
-        .option-btn.wrong {
-            outline: 3px solid #e74c3c;
-        }
-
-        #countryBox h2 {
-            margin: 8px 0 6px;
-            font-size: 22pt;
-        }
-
-        #countryBox p {
-            margin: 0;
-            color: #555;
-        }
-    </style>
-}
-@section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
-    <script src="~/js/capital.js"></script>
-}
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-
     <meta charset="UTF-8" />
-    <title>Capital Quiz</title>
-</head>
-<body>
-    <audio id="bgMusic" src="/sound/game.mp3" autoplay loop></audio>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <title>Guess the Capital</title>
+
+    <link rel="shortcut icon" href="/images/fav_icon.png" type="image/png" />
+    <link rel="stylesheet" href="/css/capital.css?v=2" />
+
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+</head>
+
+<body>
+
+    <!-- NAVBAR (самостоятелен, без Layout) -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="nav-brand">Country Quiz</span>
+            <a href="/Home/Index">Home</a>
+            <a href="/Home/GameMode">Modes</a>
+        </div>
+        <div class="nav-right">
+            <a href="/Auth/Profile">Profile</a>
+            <a href="/Auth/Logout">Logout</a>
+        </div>
+    </nav>
+
+    <!-- MAIN GAME -->
     <div class="container">
+
+        <audio id="bgMusic" src="/sound/game.mp3" autoplay loop></audio>
+
         <h1>Guess the Country by Capital!</h1>
 
         <div id="countryBox">
@@ -56,10 +46,10 @@
         <div id="timer">⏱️ Time: 15s</div>
 
         <div class="options" id="options">
-            <button class="option-btn button" data-index="0">A)</button>
-            <button class="option-btn button" data-index="1">B)</button>
-            <button class="option-btn button" data-index="2">C)</button>
-            <button class="option-btn button" data-index="3">D)</button>
+            <button class="option-btn" data-index="0">A)</button>
+            <button class="option-btn" data-index="1">B)</button>
+            <button class="option-btn" data-index="2">C)</button>
+            <button class="option-btn" data-index="3">D)</button>
         </div>
 
         <div>
@@ -71,6 +61,9 @@
         <div id="leaderboard"></div>
     </div>
 
+    <!-- GAME LOGIC (НЕ ПИПАМЕ) -->
+    <script src="/js/capital.js"></script>
+
     <script>
         const bgMusic = document.getElementById('bgMusic');
         bgMusic.volume = 0.5;
@@ -78,5 +71,6 @@
             document.body.addEventListener('click', () => bgMusic.play(), { once: true })
         );
     </script>
+
 </body>
 </html>

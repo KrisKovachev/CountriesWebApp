@@ -1,206 +1,44 @@
 ﻿@{
     Layout = null;
 }
+
 <!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="UTF-8" />
-    <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png">
-    <title>Game Mode Selection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <style>
-        @@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+    <title>Choose Region</title>
 
-        * {
-            box-sizing: border-box;
-            transition: .25s ease;
-        }
-
-        html, body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Fjalla One', sans-serif;
-            height: 100%;
-        }
-
-        /* LIGHT MODE */
-        body {
-            background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg') center/cover no-repeat;
-            color: #2A293E;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-            body::before {
-                content: "";
-                position: absolute;
-                inset: 0;
-                background: linear-gradient(120deg, rgba(255,200,255,0.2), rgba(149,164,255,0.2));
-                backdrop-filter: blur(3px);
-                z-index: 0;
-            }
-
-            /* DARK MODE */
-            body.dark-mode {
-                background: radial-gradient(circle at center, #0c1323, #06080f 70%) !important;
-                color: #e6e6e6 !important;
-            }
-
-                body.dark-mode::before {
-                    display: none;
-                }
-
-        /* CONTAINER */
-        .container {
-            background: #f8f4e5;
-            padding: 50px 80px;
-            border: 2px solid #000;
-            border-radius: 12px;
-            max-width: 480px;
-            width: 100%;
-            box-shadow: 15px 15px 0 #ffa580, 15px 15px 0 2px #000;
-            text-align: center;
-            z-index: 1;
-        }
-
-        body.dark-mode .container {
-            background: #1a1f2b;
-            border-color: #555;
-            box-shadow: 15px 15px 0 #4f5bff, 15px 15px 0 2px #000;
-        }
-
-        h1 {
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 0 #ffc8ff;
-        }
-
-        body.dark-mode h1 {
-            text-shadow: 0 0 10px #95a4ff;
-        }
-
-        /* BUTTONS */
-        .mode-button {
-            width: 100%;
-            margin: 10px 0;
-            padding: 14px;
-            border: 2px solid #000;
-            cursor: pointer;
-            font-size: 15pt;
-            background: linear-gradient(90deg, #ffa580, #95a4ff);
-            box-shadow: 3px 3px 0 #95a4ff, 3px 3px 0 2px #000;
-            border-radius: 10px;
-        }
-
-            .mode-button:hover {
-                background: #000;
-                color: white;
-                transform: scale(1.03);
-            }
-
-        body.dark-mode .mode-button {
-            background: linear-gradient(90deg, #2d3444, #3a4154);
-            color: #e6e6e6;
-            border-color: #222;
-            box-shadow: 3px 3px 0 #4f5bff, 3px 3px 0 2px #000;
-        }
-
-            body.dark-mode .mode-button:hover {
-                background: black !important;
-            }
-
-        /* BACK BUTTON */
-        #backButton {
-            position: absolute;
-            top: 20px;
-            left: 25px;
-            padding: 10px 20px;
-            background: #f8f4e5;
-            border: 2px solid #000;
-            box-shadow: 3px 3px 0 #95a4ff, 3px 3px 0 2px #000;
-            font-size: 14pt;
-            border-radius: 8px;
-            z-index: 2;
-            cursor: pointer;
-        }
-
-        body.dark-mode #backButton {
-            background: #1a1f2b;
-            color: #e6e6e6;
-            border-color: #555;
-            box-shadow: 3px 3px 0 #4f5bff, 3px 3px 0 2px #000;
-        }
-
-        /* DARK MODE TOGGLE */
-        #darkModeToggle {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            padding: 8px 18px;
-            font-size: 14pt;
-            cursor: pointer;
-            border-radius: 8px;
-            background: #fff;
-            color: #000;
-            border: 2px solid #000;
-            box-shadow: 3px 3px 0 #b88cff;
-            z-index: 999;
-        }
-
-        body.dark-mode #darkModeToggle {
-            background: #2a2d35 !important;
-            color: #e6e6e6 !important;
-            border-color: #555 !important;
-            box-shadow: 3px 3px 0 #4f5bff !important;
-        }
-
-    </style>
+    <link rel="shortcut icon" href="/images/fav_icon.png" type="image/png" />
+    <link rel="stylesheet" href="/css/choose-region.css?v=1" />
 </head>
 
 <body>
 
-    <button id="backButton" onclick="location.href='@Url.Action("Index", "Home")'">🏠 Home</button>
-    <button id="darkModeToggle">🌙 Dark Mode</button>
+    <!-- FLOATING BUTTONS -->
+    <div class="button-row">
+        <a href="/Home/Index" class="nav-btn">Back</a>
+        <a href="/Auth/Profile" class="nav-btn">Profile</a>
+    </div>
 
-    <div class="container">
-        <h1>🌍 Choose Region</h1>
+    <div class="region-container">
+        <h1>Choose Region</h1>
 
-        <button class="mode-button" data-region="all">🌐 All Countries</button>
-        <button class="mode-button" data-region="Europe">🌍 Europe</button>
-        <button class="mode-button" data-region="Asia">🌏 Asia</button>
-        <button class="mode-button" data-region="Africa">🌍 Africa</button>
-        <button class="mode-button" data-region="Americas">🌎 Americas</button>
-        <button class="mode-button" data-region="Oceania">🌴 Oceania</button>
+        <div class="region-list">
+            <button class="region-btn" data-region="all">All Countries</button>
+            <button class="region-btn" data-region="Europe">Europe</button>
+            <button class="region-btn" data-region="Asia">Asia</button>
+            <button class="region-btn" data-region="Africa">Africa</button>
+            <button class="region-btn" data-region="Americas">Americas</button>
+            <button class="region-btn" data-region="Oceania">Oceania</button>
+        </div>
     </div>
 
     <script>
-        const toggle = document.getElementById("darkModeToggle");
-
-        function applyDark() {
-            const dark = localStorage.getItem("darkMode") === "on";
-
-            if (dark) {
-                document.body.classList.add("dark-mode");
-                toggle.textContent = "☀️ Light Mode";
-            } else {
-                document.body.classList.remove("dark-mode");
-                toggle.textContent = "🌙 Dark Mode";
-            }
-        }
-
-        applyDark();
-
-        toggle.onclick = () => {
-            const newVal = !document.body.classList.contains("dark-mode");
-            localStorage.setItem("darkMode", newVal ? "on" : "off");
-            applyDark();
-        };
-
-        document.querySelectorAll('.mode-button').forEach(btn => {
+        document.querySelectorAll('.region-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const region = btn.dataset.region;
-                localStorage.setItem('region', region);
+                localStorage.setItem('region', btn.dataset.region);
                 window.location.href = '/Home/Quiz';
             });
         });

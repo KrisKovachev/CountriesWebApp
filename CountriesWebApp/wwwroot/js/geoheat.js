@@ -1,232 +1,260 @@
-﻿// ==========================
-// GeoHeat - Full Working Game (BACKEND API + GeoJSON)
-// ==========================
+﻿let map;
+let guessLayerGroup;
 
 let countries = [];
-let guesses = [];
-let mystery = null;
+let secretCountry = null;
 
-const toRad = d => d * Math.PI / 180;
+// store all guessed correct names
+let guessedCountries = new Set();
 
-function distanceKm(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("guessBtn").addEventListener("click", onGuess);
+    document.getElementById("countryInput").addEventListener("keydown", e => {
+        if (e.key === "Enter") onGuess();
+    });
 
-    const a =
-        Math.sin(dLat / 2) ** 2 +
-        Math.cos(toRad(lat1)) *
-        Math.cos(toRad(lat2)) *
-        Math.sin(dLon / 2) ** 2;
+    document.getElementById("giveUpBtn").addEventListener("click", giveUp);
 
-    return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
+    initMap();
+});
 
-const normalize = s =>
-    s.toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .trim();
-
-const heatColor = d => {
-    if (d < 500) return "#ff3333";
-    if (d < 1500) return "#ff7b00";
-    if (d < 3000) return "#ffcc00";
-    if (d < 6000) return "#3ab4ff";
-    return "#0a2d52";
-};
-
-document.addEventListener("DOMContentLoaded", async () => {
-
-    const container = document.getElementById("globeContainer");
-    const input = document.getElementById("countryInput");
-    const btn = document.getElementById("guessBtn");
-    const msg = document.getElementById("message");
-    const list = document.getElementById("guessList");
-
-    const setMessage = (t, c = "#ffffff") => {
-        msg.textContent = t;
-        msg.style.color = c;
-    };
-
-    // ============================================
-    // STEP 1 — LOAD BACKEND COUNTRY LIST
-    // ============================================
-    let apiCountries = [];
-
-    try {
-        const r = await fetch("/Country/GetAll"); // <-- ЕТО ГО ДЕТО БЕШЕ ПРОБЛЕМА
-        apiCountries = await r.json();
-    } catch (e) {
-        console.error("API load error:", e);
-        setMessage("Failed to load country API.", "red");
-        return;
+async function initMap() {
+    const mapEl = document.getElementById("map");
+    if (mapEl) {
+        mapEl.style.width = "700px";
+        mapEl.style.maxWidth = "100%";
     }
 
-    apiCountries = apiCountries.map(c => ({
-        name: c.name,
-        code: c.code,
-        lat: c.latitude,
-        lon: c.longitude
-    }));
+    map = L.map("map", {
+        worldCopyJump: false,
+        zoomControl: true,
+        maxBounds: [[-85, -180], [85, 180]],
+        maxBoundsViscosity: 1.0
+    }).setView([20, 0], 2);
 
-    console.log("Backend countries:", apiCountries.length);
+    L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+        {
+            subdomains: "abcd",
+            maxZoom: 6,
+            noWrap: true,
+            bounds: [[-85, -180], [85, 180]]
+        }
+    ).addTo(map);
 
+    guessLayerGroup = L.layerGroup().addTo(map);
 
-    // ============================================
-    // STEP 2 — LOAD GEOJSON SHAPES
-    // ============================================
-    let geoJSON = null;
+    const geo = await fetch("/data/customgeo.json").then(r => r.json());
 
-    try {
-        geoJSON = await fetch("/data/customgeo.json").then(r => r.json());
-    } catch (e) {
-        console.error("GeoJSON error:", e);
-        setMessage("Failed to load map shapes.", "red");
-        return;
-    }
+    countries = geo.features.map(f => {
+        const p = f.properties;
 
-
-    // ============================================
-    // STEP 3 — MERGE SHAPES WITH API USING ISO CODE
-    // ============================================
-    countries = geoJSON.features.map(f => {
-        const props = f.properties || {};
-
-        if (!f.geometry || !f.geometry.coordinates) return null;
-
-        const centroid = d3.geoCentroid(f);
-        if (!isFinite(centroid[0]) || !isFinite(centroid[1])) return null;
-
-        // ISO code from GeoJSON
-        const iso = props.ISO_A3 || props.iso_a3 || props.ADM0_A3;
-        if (!iso) return null;
-
-        // match API country by ISO code
-        const apiMatch = apiCountries.find(c =>
-            normalize(c.code) === normalize(iso)
-        );
-
-        if (!apiMatch) return null;
+        const name = p.ADMIN || p.name || p.NAME;
+        const iso2 = (p.ISO_A2 || p.iso2 || "").toLowerCase();
+        const iso3 = (p.ISO_A3 || p.iso3 || "").toLowerCase();
 
         return {
-            ...f,
-            countryName: apiMatch.name,
-            countryId: apiMatch.code,
-            lat: apiMatch.lat,
-            lon: apiMatch.lon
+            feature: f,
+            name,
+            norm: normalize(name),
+            iso2,
+            iso3,
+            center: getCenter(f),
+
+            // partial match tokens
+            partialNames: buildPartialNames(name, iso2, iso3)
         };
-    }).filter(Boolean);
+    });
 
-    console.log("Merged countries:", countries.length);
+    L.geoJSON(geo, {
+        style: {
+            color: "#333",
+            weight: 0.7,
+            fillOpacity: 0.10
+        }
+    }).addTo(map);
 
-    if (!countries.length) {
-        setMessage("No countries matched API.", "red");
+    setTimeout(() => map.invalidateSize(), 200);
+
+    startRound();
+}
+
+// create partial search tokens
+function buildPartialNames(name, iso2, iso3) {
+    const tokens = new Set();
+
+    const norm = normalize(name);
+    tokens.add(norm);
+
+    // separate word tokens
+    name.toLowerCase().split(/[\s]+/).forEach(p => tokens.add(normalize(p)));
+
+    // concatenated
+    tokens.add(norm.replace(/ /g, ""));
+
+    // iso codes
+    if (iso2) tokens.add(iso2);
+    if (iso3) tokens.add(iso3);
+
+    return Array.from(tokens);
+}
+
+function startRound() {
+    guessLayerGroup.clearLayers();
+    document.getElementById("guessList").innerHTML = "";
+
+    guessedCountries.clear(); // reset guessed list
+
+    secretCountry = countries[Math.floor(Math.random() * countries.length)];
+
+    map.setView(secretCountry.center, 2);
+
+    showMessage("Guess the hidden country!", "#7fd0ff");
+}
+
+function onGuess() {
+    const inputEl = document.getElementById("countryInput");
+    const val = inputEl.value.trim().toLowerCase();
+    const normVal = normalize(val);
+
+    if (!val) return;
+
+    // find matching country (original logic + partial)
+    const guess = countries.find(c =>
+        c.norm === normVal ||
+        c.iso2 === val ||
+        c.iso3 === val ||
+        val.includes("(" + c.iso2 + ")") ||
+        val.includes("(" + c.iso3 + ")") ||
+        c.partialNames.some(t => t.startsWith(normVal))
+    );
+
+    if (!guess) {
+        showMessage("❌ Country not found", "#ff6666");
+        inputEl.value = "";
         return;
     }
 
-
-    // ============================================
-    // STEP 4 — INIT GLOBE
-    // ============================================
-    const globe = Globe()
-        (container)
-        .globeImageUrl("//unpkg.com/three-globe/example/img/earth-dark.jpg")
-        .showAtmosphere(true)
-        .atmosphereColor("#4faaff")
-        .atmosphereAltitude(0.18)
-        .backgroundColor("rgba(0,0,0,0)")
-        .polygonsData(countries)
-        .polygonCapColor(() => "#0e1220")
-        .polygonSideColor(() => "rgba(0,0,0,0.4)")
-        .polygonStrokeColor(() => "#1b2339")
-        .polygonStrokeWidth(0.5)
-        .polygonAltitude(0.012);
-
-    globe.pointOfView({ lat: 0, lng: 0, altitude: 2.1 }, 0);
-
-
-    // ============================================
-    // STEP 5 — MYSTERY COUNTRY
-    // ============================================
-    mystery = countries[Math.floor(Math.random() * countries.length)];
-    setMessage("Mystery country selected. Start guessing!", "#9bb5ff");
-
-
-    // ============================================
-    // STEP 6 — HELPERS
-    // ============================================
-    const updateColors = () => {
-        globe.polygonCapColor(f => {
-            const g = guesses.find(x => x.id === f.countryId);
-            return g ? heatColor(g.dist) : "#0e1220";
-        });
-    };
-
-    const updateList = () => {
-        list.innerHTML = guesses
-            .sort((a, b) => a.dist - b.dist)
-            .map(g => `
-                <div class="geoheat-guess-item">
-                    <span class="name">${g.name}</span>
-                    <span class="dist">${Math.round(g.dist)} km</span>
-                </div>
-            `)
-            .join("");
-    };
-
-
-    // ============================================
-    // STEP 7 — GUESS HANDLER
-    // ============================================
-    function handleGuess() {
-        const val = normalize(input.value);
-        if (!val) return;
-
-        const match = countries.find(c =>
-            normalize(c.countryName) === val
-        );
-
-        if (!match) {
-            setMessage("Unknown country.", "red");
-            return;
-        }
-
-        if (guesses.some(g => g.id === match.countryId)) {
-            setMessage("Already guessed.", "#ffcc00");
-            return;
-        }
-
-        const dist = distanceKm(match.lat, match.lon, mystery.lat, mystery.lon);
-
-        guesses.push({
-            id: match.countryId,
-            name: match.countryName,
-            dist
-        });
-
-        updateColors();
-        updateList();
-
-        globe.pointOfView(
-            { lat: match.lat, lng: match.lon, altitude: 1.8 },
-            800
-        );
-
-        if (match.countryId === mystery.countryId) {
-            setMessage(`🔥 GG! You found ${mystery.countryName}!`, "#4fff9c");
-        } else {
-            setMessage(`${match.countryName} is ${Math.round(dist)} km away.`, "#66aaff");
-        }
-
-        input.value = "";
+    // 🔥🔥 FIXED: duplicate check is HERE — BEFORE processing
+    if (guessedCountries.has(guess.name)) {
+        showMessage("⚠️ You already guessed this country!", "#ffcc00");
+        inputEl.value = "";
+        inputEl.focus();
+        return;
     }
 
-    btn.addEventListener("click", handleGuess);
-    input.addEventListener("keydown", e => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            handleGuess();
+    // mark as guessed (so any future partial matches are blocked)
+    guessedCountries.add(guess.name);
+
+    const dist = haversine(guess.center, secretCountry.center);
+    const color = getHeatColor(dist);
+
+    const layer = L.geoJSON(guess.feature, {
+        style: {
+            color,
+            fillColor: color,
+            weight: 2,
+            fillOpacity: 0.5
         }
-    });
-});
+    }).addTo(guessLayerGroup);
+
+    addGuess(guess.name, dist, color);
+
+    if (dist < 100) {
+        showMessage(`🎉 Correct! ${guess.name} is the secret country!`, "#6aff6a");
+
+        L.geoJSON(secretCountry.feature, {
+            style: {
+                color: "#4caf50",
+                fillColor: "#4caf50",
+                fillOpacity: 0.6,
+                weight: 3
+            }
+        }).addTo(guessLayerGroup);
+
+        map.fitBounds(layer.getBounds(), { maxZoom: 5 });
+
+        setTimeout(startRound, 3000);
+    } else {
+        showMessage(`📍 ${guess.name} is ${Math.round(dist)} km away.`, color);
+    }
+
+    inputEl.value = "";
+    inputEl.focus();
+}
+
+function getHeatColor(dist) {
+    if (dist > 6000) return "#ff0033";
+    if (dist > 4000) return "#ff6600";
+    if (dist > 2500) return "#ffaa00";
+    if (dist > 1200) return "#d4ff00";
+    if (dist > 300) return "#66ff66";
+    return "#00ff88";
+}
+
+function addGuess(name, dist, color) {
+    const row = document.createElement("div");
+    row.className = "geoheat-guess-item";
+    row.style.borderLeftColor = color;
+
+    row.innerHTML = `
+        <span>${name}</span>
+        <span>${Math.round(dist)} km</span>
+    `;
+
+    document.getElementById("guessList").prepend(row);
+}
+
+function normalize(s) {
+    return s
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z]/g, "");
+}
+
+function getCenter(feature) {
+    const layer = L.geoJSON(feature);
+    const c = layer.getBounds().getCenter();
+    return [c.lat, c.lng];
+}
+
+function haversine(a, b) {
+    const R = 6371;
+    const dLat = (b[0] - a[0]) * Math.PI / 180;
+    const dLon = (b[1] - a[1]) * Math.PI / 180;
+
+    const lat1 = a[0] * Math.PI / 180;
+    const lat2 = b[0] * Math.PI / 180;
+
+    const h = Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1) * Math.cos(lat2) *
+        Math.sin(dLon / 2) ** 2;
+
+    return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function showMessage(msg, color) {
+    const el = document.getElementById("message");
+    el.style.color = color;
+    el.textContent = msg;
+}
+
+function giveUp() {
+    guessLayerGroup.clearLayers();
+
+    const layer = L.geoJSON(secretCountry.feature, {
+        style: {
+            color: "#ff4444",
+            fillColor: "#ff4444",
+            fillOpacity: 0.6,
+            weight: 3
+        }
+    }).addTo(guessLayerGroup);
+
+    map.fitBounds(layer.getBounds(), { maxZoom: 5 });
+
+    showMessage(`❗ The secret country was: ${secretCountry.name}`, "#ff4444");
+
+    setTimeout(startRound, 3000);
+}

@@ -50,7 +50,10 @@ namespace CountriesWebApp.Core.Services
                     Language = country["languages"] != null
                         ? string.Join(", ", ((JObject)country["languages"]).Properties().Select(p => p.Value.ToString()))
                         : "N/A",
-                    Currency = GetCurrencyName(country)
+                    Currency = GetCurrencyName(country),
+                    Code = country["cca3"]?.ToString() ?? "N/A",
+                    Latitude = (double?)country["latlng"]?[0] ?? 0,
+                    Longitude = (double?)country["latlng"]?[1] ?? 0
                 };
 
                 // ✅ Проверяваме асинхронно и игнорираме разликата в case
@@ -88,6 +91,10 @@ namespace CountriesWebApp.Core.Services
             var name = firstCurrency.Value["name"]?.ToString() ?? "N/A";
 
             return $"{name} ({code})";
+        }
+        public async Task<List<CountryStats>> GetAllCountriesAsync()
+        {
+            return await _context.CountryData.ToListAsync();
         }
     }
 }

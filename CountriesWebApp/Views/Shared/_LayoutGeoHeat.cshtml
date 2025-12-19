@@ -10,48 +10,136 @@
     <title>@ViewData["Title"] - GeoHeat</title>
     <link rel="shortcut icon" href="~/images/fav_icon.png" type="image/png" />
 
-    <!-- НЕ ЗАРЕЖДАМЕ site.css → ТО Е ТОВА, КОЕТО ТИ ЧУПИ CDN-ОВЕТЕ -->
+    <style>
+        @@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            background: radial-gradient(circle at center, #050814, #020309 70%);
+            color: #f0f0f0;
+            font-family: 'Fjalla One', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .geoheat-nav {
+            position: fixed;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            padding: 8px 22px;
+            border-radius: 18px;
+            background: rgba(5, 9, 24, 0.98);
+            border: 1px solid #2c3357;
+            box-shadow: 0 10px 34px rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .geoheat-nav-group {
+            display: inline-flex;
+            gap: 8px;
+            padding: 4px;
+            border-radius: 14px;
+            background: radial-gradient(circle at top, #1b2240, #121728 70%);
+            box-shadow: inset 0 0 0 1px #111528;
+        }
+
+        .geoheat-nav a,
+        .geoheat-nav span.nav-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            text-decoration: none;
+            color: #f8f4ff;
+            background: linear-gradient(145deg, #2a325f, #3a4a86);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+            border: 1px solid #15182b;
+        }
+
+            .geoheat-nav a:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.9);
+            }
+
+        .geoheat-nav span.nav-label {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(0, 200, 255, 0.9);
+        }
+
+        .geoheat-nav-user {
+            margin-left: 8px;
+            display: inline-flex;
+            gap: 6px;
+        }
+
+        @@media (max-width: 768px) {
+            .geoheat-nav
+
+        {
+            padding: 6px 12px;
+            gap: 6px;
+        }
+
+        .geoheat-nav a,
+        .geoheat-nav span.nav-label {
+            padding: 4px 10px;
+            font-size: 12px;
+        }
+
+        .geoheat-nav span.nav-label {
+            display: none;
+        }
+
+        }
+    </style>
+
     @RenderSection("Styles", required: false)
 </head>
-
 <body>
+    <nav class="geoheat-nav">
+        <div class="geoheat-nav-group">
+            <span class="nav-label">🌍 Country Quiz</span>
+            <a href="/Home/Index">🏠 Home</a>
+            <a href="/Home/Gamemode">🎮 Gamemode Selection</a>
+        </div>
 
-    <!-- NAVBAR – оставяме го, защото искаш само него -->
-    <nav style="
-        position:fixed;
-        top:10px; left:50%; transform:translateX(-50%);
-        z-index:2000;
-        background:transparent;
-        border:2px solid #000;
-        border-radius:12px;
-        padding:8px 22px;
-        box-shadow:5px 5px 0px #ffa580, 5px 5px 0px 1px #000;
-        display:flex; gap:16px; align-items:center;
-        font-family:'Fjalla One',sans-serif;
-    ">
-        <span style="font-size:14pt;">🌍 Country Quiz</span>
-        <a href="/Home/Index">🏠 Home</a>
-        <a href="/Home/Gamemode">🗺 Gamemode Selection</a>
-
-        @if (username != null)
-        {
-            <span>
-                👤 @username
+        <div class="geoheat-nav-group geoheat-nav-user">
+            @if (username != null)
+            {
+                <span>🧑 @username</span>
                 <a href="/Auth/Profile">Profile</a>
                 <a href="/Auth/Logout">Logout</a>
-            </span>
-        }
-        else
-        {
-            <span>
+            }
+            else
+            {
                 <a href="/Auth/Login">Login</a>
                 <a href="/Auth/Register">Register</a>
-            </span>
-        }
+            }
+        </div>
     </nav>
 
-    <!-- CONTENT -->
-    <main style="margin-top:110px;">
+    <main>
         @RenderBody()
     </main>
 

@@ -1,139 +1,181 @@
-﻿@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+    --primary-cyan: #00ffff;
+    --primary-purple: #7c3aed;
+    --primary-pink: #ff00ff;
+    --dark-bg: #1a0b2e;
+    --darker-bg: #0f051a;
+    --card-bg: rgba(229, 231, 235, 0.03);
+    --border-color: rgba(229, 231, 235, 0.2);
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 /* GLOBAL BG */
-body {
-    background: linear-gradient(145deg, #f4efd7, #ece3bb);
-    transition: background 0.3s ease;
+html, body {
+    min-height: 100vh;
+    font-family: 'Poppins', system-ui, sans-serif;
+    color: var(--text-primary);
+    background: radial-gradient(circle at 20% 20%, rgba(0,255,255,.12), transparent 45%), radial-gradient(circle at 80% 30%, rgba(124,58,237,.15), transparent 45%), linear-gradient(180deg, var(--dark-bg), var(--darker-bg));
 }
 
-    /* DARK MODE BG */
-    body.dark-mode {
-        background: linear-gradient(145deg, #0f1117, #1a1c23) !important;
+/* =====================
+   NAVBAR
+   ===================== */
+.top-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(15, 5, 26, 0.85);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--primary-cyan);
+    text-shadow: 0 0 12px rgba(0,255,255,.6);
+}
+
+.favicon {
+    width: 22px;
+    height: 22px;
+    filter: drop-shadow(0 0 6px rgba(0,255,255,.6));
+}
+
+/* NAV LINKS */
+.top-nav a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    letter-spacing: .5px;
+    position: relative;
+}
+
+    .top-nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
+        transition: width .3s ease;
     }
 
-/* MAIN CARD */
+    .top-nav a:hover {
+        color: var(--primary-cyan);
+        text-shadow: 0 0 10px rgba(0,255,255,.6);
+    }
+
+        .top-nav a:hover::after {
+            width: 100%;
+        }
+
+/* spacer for fixed nav */
+body::before {
+    content: "";
+    display: block;
+    height: 100px;
+}
+
+/* =====================
+   MAIN CONTAINER
+   ===================== */
 .gamemode-container {
-    margin-top: 80px;
-    background: #fbf8ed;
-    padding: 55px 70px;
-    border-radius: 16px;
-    border: 2px solid #111;
-    box-shadow: 10px 10px 0 #ff9b70, 12px 12px 0 3px #000;
-    transition: 0.3s ease;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3.5rem 3rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    clip-path: polygon( 30px 0%, 100% 0%, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0% 100%, 0% 30px );
 }
 
-body.dark-mode .gamemode-container {
-    background: #22252f !important;
-    border-color: #4a4d5a !important;
-    box-shadow: 10px 10px 0 #4f5bff, 12px 12px 0 3px #000 !important;
+    /* TITLE */
+    .gamemode-container h1 {
+        text-align: center;
+        font-size: 2.4rem;
+        font-weight: 600;
+        margin-bottom: 3rem;
+        background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+/* =====================
+   GRID
+   ===================== */
+.gamemode-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    align-items: center;
 }
 
-/* TITLE */
-h1 {
-    text-align: center;
-    color: #2b2347;
-    font-size: 32px;
-    margin-bottom: 35px;
-    text-shadow: 2px 2px 0px #ffccff;
-}
-
-body.dark-mode h1 {
-    color: #e8e6ff !important;
-    text-shadow: 0 0 8px rgba(140, 150, 255, 0.4);
-}
-
-
-/* GRID */
-/* CLEAN, READABLE GAME MODE BUTTONS */
+/* =====================
+   MODE CARD
+   ===================== */
 .mode-card {
-    background: #ffffff; /* чист бял фон */
-    border: 2px solid #000;
-    padding: 22px 25px;
-    border-radius: 14px;
-    cursor: pointer;
-    box-shadow: 4px 4px 0 #95a4ff, 4px 4px 0 2px #000;
-    transition: 0.25s ease;
+    background: rgba(0,255,255,.02);
+    border: 1px solid var(--border-color);
+    padding: 2.4rem 2.2rem;
     text-align: center;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    clip-path: polygon( 20px 0%, 100% 0%, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0% 100%, 0% 20px );
+    width: 100%;
+    max-width: 420px;
 }
 
     .mode-card h2 {
-        margin: 0;
-        font-size: 17pt;
-        color: #2A293E; /* ЧЕТИМ ТЪМЕН ТЕКСТ */
-        text-shadow: none !important;
-        letter-spacing: 0.5px;
+        font-size: 1.2rem;
+        font-weight: 500;
+        letter-spacing: .5px;
+        color: var(--text-primary);
     }
 
-    /* Hover – чисто, ясно, професионално */
+    /* HOVER */
     .mode-card:hover {
-        background: #f0f0f0;
-        transform: translateY(-4px) scale(1.03);
+        transform: translateY(-10px);
+        background: rgba(0,255,255,.06);
+        box-shadow: 0 20px 45px rgba(0,255,255,.2);
     }
 
-/* DARK MODE */
-body.dark-mode .mode-card {
-    background: #272A33 !important;
-    border-color: #000 !important;
-    color: #f1f1f1 !important;
-    box-shadow: 4px 4px 0 #4f5bff, 4px 4px 0 2px #000 !important;
+/* =====================
+   RESPONSIVE
+   ===================== */
+@media (max-width: 768px) {
+    .top-nav {
+        padding: 1rem 1.5rem;
+    }
+
+    .gamemode-container {
+        margin: 0 1rem;
+        padding: 2.5rem 2rem;
+    }
 }
-
-    body.dark-mode .mode-card:hover {
-        background: #323542 !important;
-    }
-
-    /* Dark mode text fixes */
-    body.dark-mode .mode-card h2 {
-        color: #f1f1f1 !important;
-    }
-
-/* DARK MODE CARDS */
-body.dark-mode .mode-card {
-    background: #2e3341 !important;
-    border-color: #000;
-    color: #e4e4e4;
-    box-shadow: 5px 5px 0px #4f5bff, 5px 5px 0px 2px #000 !important;
-}
-
-    body.dark-mode .mode-card:hover {
-        background: #4f5bff !important;
-        color: white !important;
-        transform: translateY(-4px) scale(1.04);
-        box-shadow: 5px 5px 0px #ff7b5f, 5px 5px 0px 2px #000 !important;
-    }
-
-
-/* DARK MODE TOGGLE BUTTON */
-.dark-toggle {
-    position: fixed;
-    top: 65px;
-    right: 45px;
-    padding: 10px 22px;
-    border-radius: 12px;
-    background: #ffffff;
-    border: 2px solid #000;
-    color: #222;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 600;
-    box-shadow: 3px 3px 0 #7ea1ff, 3px 3px 0 2px #000;
-    transition: all 0.25s ease;
-}
-
-    .dark-toggle:hover {
-        transform: translateY(-3px);
-        background: #000;
-        color: #fff;
-    }
-
-body.dark-mode .dark-toggle {
-    background: #2b2f38 !important;
-    color: #e8e8e8 !important;
-    border-color: #666 !important;
-    box-shadow: 3px 3px 0 #4f5bff !important;
-}
-
-    body.dark-mode .dark-toggle:hover {
-        background: #4f5bff !important;
-        color: #fff !important;
-    }

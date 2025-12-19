@@ -1,95 +1,267 @@
-﻿body {
-    font-family: 'Fjalla One', sans-serif;
-    background: linear-gradient(120deg, #a8edea, #fed6e3);
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+    --c1: #00ffff;
+    --c2: #7c3aed;
+    --bg1: #14082a;
+    --bg2: #0b0416;
+    --card: rgba(255,255,255,.06);
+    --border: rgba(255,255,255,.18);
+    --text: #ffffff;
+    --muted: rgba(255,255,255,.70);
+    --ok: #2ecc71;
+    --bad: #ff6b6b;
+    --nav-h: 64px;
+    --gap-under-nav: 56px; /* колко да е под нав бара */
+}
+
+/* RESET */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
     margin: 0;
-    color: #222;
+    padding: 0;
 }
 
-.quiz-container {
-    background: #fff8f0;
-    padding: 50px 70px;
-    border: 2px solid #000;
-    border-radius: 14px;
-    text-align: center;
-    box-shadow: 15px 15px 1px #ffa580, 15px 15px 0 2px #000;
-    animation: fadeSlideUp 0.8s ease-out;
+html {
+    scroll-padding-top: calc(var(--nav-h) + 16px);
 }
 
-h1 {
-    font-size: 28pt;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 0 #ffc8ff;
+body {
+    font-family: 'Poppins',system-ui,sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    /* IMPORTANT: да не наследява чужди display:flex от други CSS */
+    display: block;
+    background: radial-gradient(circle at 20% 20%, rgba(0,255,255,.14), transparent 45%), radial-gradient(circle at 80% 30%, rgba(124,58,237,.18), transparent 45%), linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
-#countryName {
-    font-size: 24pt;
-    margin: 15px 0;
-    color: #333;
+/* ================= NAVBAR ================= */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 1000;
+    background: rgba(8,4,18,.82);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
 }
 
-input {
-    padding: 10px;
-    font-size: 16pt;
-    width: 70%;
-    border: 2px solid #000;
-    border-radius: 8px;
-    margin-top: 10px;
-    text-align: center;
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.btn-row {
-    margin-top: 20px;
+.nav-brand {
+    font-weight: 600;
+    letter-spacing: .4px;
+    background: linear-gradient(135deg,var(--c1),var(--c2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.top-nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .95rem;
+    padding: 8px 14px;
+    border-radius: 999px;
+    transition: .2s;
+}
+
+    .top-nav a:hover {
+        color: #0b0416;
+        background: linear-gradient(135deg,var(--c1),var(--c2));
+        box-shadow: 0 0 18px rgba(0,255,255,.35);
+    }
+
+/* ================= PAGE ================= */
+.page {
+    min-height: 100vh;
+    padding-bottom: 96px;
+    /* центриране по хоризонтал */
     display: flex;
     justify-content: center;
-    gap: 15px;
+    /* да не лепи към top */
+    align-items: flex-start;
 }
 
-button {
-    background: linear-gradient(90deg, #ffa580, #95a4ff);
-    border: 2px solid #000;
-    padding: 10px 20px;
-    font-size: 14pt;
-    font-weight: bold;
+/* ТОВА Е ЖЕЛЕЗНИЯТ OFFSET */
+.container {
+    width: min(640px, calc(100% - 32px));
+    margin-top: calc(var(--nav-h) + var(--gap-under-nav));
+    margin-left: auto;
+    margin-right: auto;
+    padding: 48px 44px 44px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 30px 80px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12), 0 0 46px rgba(124,58,237,.22);
+}
+
+    /* ================= TITLE ================= */
+    .container h1 {
+        margin: 0 0 22px 0;
+        font-size: 2.15rem;
+        font-weight: 600;
+        background: linear-gradient(135deg,var(--c1),var(--c2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+/* ================= QUESTION ================= */
+.question {
+    margin-bottom: 18px;
+}
+
+    .question p {
+        margin: 0;
+        color: var(--muted);
+        font-size: .95rem;
+    }
+
+#capitalName {
+    margin: 12px 0 0 0;
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: .3px;
+}
+
+/* ================= TIMER ================= */
+.timer {
+    margin: 18px 0 12px 0;
+    font-weight: 600;
+    color: rgba(255,255,255,.9);
+}
+
+/* ================= OPTIONS ================= */
+.options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 26px 0 22px;
+}
+
+.option-btn {
+    width: 100%;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(0,255,255,.06);
+    border: 1px solid var(--border);
+    color: var(--text);
     cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: .2s;
+    font-weight: 500;
 }
 
-    button:hover {
-        background: #000;
-        color: #fff;
+    .option-btn:hover {
+        transform: translateY(-3px);
+        background: linear-gradient(135deg,var(--c1),var(--c2));
+        color: #0b0416;
+        box-shadow: 0 0 22px rgba(0,255,255,.32);
+    }
+
+    .option-btn.correct {
+        outline: 3px solid var(--ok);
+    }
+
+    .option-btn.wrong {
+        outline: 3px solid var(--bad);
+    }
+
+/* ================= NEXT ================= */
+#nextBtn {
+    margin-top: 10px;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    background: linear-gradient(135deg,var(--c1),var(--c2));
+    color: #0b0416;
+    font-weight: 600;
+    transition: .2s;
+}
+
+    #nextBtn:hover {
         transform: translateY(-2px);
+        box-shadow: 0 0 26px rgba(124,58,237,.4);
     }
 
-#message {
-    margin-top: 20px;
-    font-size: 16pt;
+/* ================= INFO ================= */
+.message {
+    margin-top: 16px;
+    color: var(--muted);
+    min-height: 22px;
 }
 
-#score, #timer {
-    margin-top: 20px;
-    font-weight: bold;
+.score {
+    margin-top: 12px;
+    font-weight: 600;
 }
 
-.leaderboard {
-    margin-top: 30px;
-    border-top: 2px solid #000;
-    padding-top: 10px;
+/* ================= LEADERBOARD ================= */
+#leaderboard {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    text-align: left;
+    color: rgba(255,255,255,.88);
 }
 
-@keyframes fadeSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
+    #leaderboard hr {
+        border: none;
+        border-top: 1px solid rgba(255,255,255,.14);
+        margin: 10px 0;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    #leaderboard img {
+        max-width: 56px;
+        max-height: 56px;
+        vertical-align: middle;
+        filter: drop-shadow(0 0 10px rgba(0,255,255,.25));
+    }
+
+    #leaderboard > div,
+    #leaderboard p {
+        margin: 8px 0;
+        padding: 8px 12px;
+        font-size: .9rem;
+        line-height: 1.3;
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(0,0,0,.12);
+        border-radius: 14px;
+    }
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 700px) {
+    :root {
+        --gap-under-nav: 40px;
+    }
+
+    .options {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 40px 26px;
+    }
+
+    .top-nav {
+        padding: 0 18px;
+    }
+
+    .nav-left, .nav-right {
+        gap: 12px;
     }
 }
